@@ -1,0 +1,30 @@
+{
+  "Madrid": {
+    "name": "std::Madrid",
+    "img": "stdNodes/stdMadrid.png",
+    "desc": "Node for Madrid - std::World Board of Directors",
+    "associations": [
+     {
+        "name": "CPrA (Universidad Autónoma de Madrid)",
+        "img": "stdNodes/CPrA.png",
+        "url": "https://uam-cpra.github.io/"
+      },  
+      {
+        "name": "UCppM (Universidad Complutense de Madrid)",
+        "img": "stdNodes/UCppM.png",
+        "url": "https://ucppm.es/"
+      },
+      {
+        "name": "URJC-CP (Universidad Rey Juan Carlos)",
+        "img": "stdNodes/URJC.png",
+        "url": "https://urjc-cp.github.io/urjc-cp/"
+      },
+      {
+        "name": "CUNEF",
+        "img": "stdNodes/CUNEF.png",
+        "url": "https://www.cunef.edu/"
+      }
+      
+    ]
+  }
+}
