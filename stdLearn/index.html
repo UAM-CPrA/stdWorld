@@ -1205,19 +1205,14 @@
 
         // Enhanced navigation function with 404 handling
         function navigateToPage(url) {
-            // Check if the URL exists by making a HEAD request
-            fetch(url, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = url;
-                    } else {
-                        handle404Error(url);
-                    }
-                })
-                .catch(error => {
-                    console.error('Navigation error:', error);
-                    handle404Error(url);
-                });
+            // Direct navigation without CORS-prone HEAD request
+            // GitHub Pages will handle 404s naturally
+            try {
+                window.location.href = url;
+            } catch (error) {
+                console.error('Navigation error:', error);
+                handle404Error(url);
+            }
         }
 
         // Load concepts data and populate the page
