@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>std::Learn - std::World</title>
-    <link rel="icon" type="image/png" href="_img/favicon.png">
+    <link rel="icon" type="image/png" href="_img/favicon.svg.png">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts for better typography -->
@@ -1225,54 +1225,186 @@
         // Load concepts data and populate the page
         async function loadConceptsData() {
             try {
-                // Use meta data directly from meta.js
-                const data = window.stdLearnMeta || {};
+                console.log('Starting loadConceptsData...');
                 
-                // Update page title and description
-                document.querySelector('.content-header h1').textContent = data.title;
-                document.querySelector('.content-header p').textContent = data.description;
+                // Verify required functions exist
+                const requiredFunctions = [
+                    'generateSidebarNavigation',
+                    'generateMainContent', 
+                    'getSectionDifficultyLevel',
+                    'getDifficultyColor',
+                    'getIconForSection'
+                ];
                 
-                // Clear existing sidebar navigation and content
+                const missingFunctions = requiredFunctions.filter(funcName => typeof window[funcName] !== 'function');
+                if (missingFunctions.length > 0) {
+                    console.warn('Missing required functions:', missingFunctions);
+                }
+                
+                // Wait a bit for scripts to load if needed
+                let attempts = 0;
+                const maxAttempts = 20;
+                
+                while (!window.stdLearnMeta && attempts < maxAttempts) {
+                    console.log(`Waiting for stdLearnMeta... attempt ${attempts + 1}`);
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    attempts++;
+                }
+                
+                // Use meta data directly from meta.js, or fallback data
+                let data = window.stdLearnMeta;
+                
+                if (!data || !data.sections) {
+                    console.warn('stdLearnMeta not found or invalid, using fallback data');
+                    data = {
+                        title: "Welcome to std::Learn!",
+                        description: "Master the fundamental algorithms and advanced techniques of competitive programming through structured learning modules.",
+                        sections: [
+                            {
+                                id: "fundamentals",
+                                title: "Fundamentals",
+                                description: "Core principles of problem-solving and basic programming techniques.",
+                                children: [
+                                    {
+                                        id: "time-complexity",
+                                        title: "Time & Space Complexity",
+                                        description: "Understanding algorithmic complexity analysis - the foundation of competitive programming optimization.",
+                                        level: "Beginner",
+                                        readTime: "15 min read",
+                                        featured: true
+                                    }
+                                ]
+                            },
+                            {
+                                id: "data-structures",
+                                title: "Data Structures", 
+                                description: "Advanced data structures for efficient problem solving.",
+                                children: [
+                                    {
+                                        id: "segment-trees",
+                                        title: "Segment Trees",
+                                        description: "Master segment trees for range queries and updates in logarithmic time.",
+                                        level: "Intermediate",
+                                        readTime: "30 min read",
+                                        featured: true
+                                    },
+                                    {
+                                        id: "union-find",
+                                        title: "Union Find (DSU)",
+                                        description: "Disjoint Set Union for efficiently handling connectivity queries.",
+                                        level: "Intermediate", 
+                                        readTime: "25 min read",
+                                        featured: true
+                                    }
+                                ]
+                            },
+                            {
+                                id: "algorithms",
+                                title: "Advanced Algorithms",
+                                description: "Complex algorithms for competitive programming mastery.",
+                                children: [
+                                    {
+                                        id: "dynamic-programming",
+                                        title: "Dynamic Programming", 
+                                        description: "Master the art of dynamic programming with classic and advanced problems.",
+                                        level: "Intermediate",
+                                        readTime: "40 min read",
+                                        featured: true
+                                    },
+                                    {
+                                        id: "graph-algorithms",
+                                        title: "Graph Algorithms",
+                                        description: "Essential graph algorithms including DFS, BFS, shortest paths, and minimum spanning trees.",
+                                        level: "Intermediate",
+                                        readTime: "45 min read", 
+                                        featured: true
+                                    },
+                                    {
+                                        id: "string-algorithms",
+                                        title: "String Algorithms",
+                                        description: "String processing algorithms including KMP, Z-algorithm, and suffix arrays.",
+                                        level: "Advanced",
+                                        readTime: "40 min read",
+                                        featured: true
+                                    }
+                                ]
+                            }
+                        ]
+                    };
+                } else {
+                    console.log('Using stdLearnMeta data:', data);
+                }
+                
+                // Check if required DOM elements exist
+                const contentHeader = document.querySelector('.content-header h1');
+                const contentDescription = document.querySelector('.content-header p');
                 const sidebarNav = document.querySelector('.sidebar-nav');
                 const content = document.querySelector('.content');
+                
+                if (!contentHeader || !contentDescription || !sidebarNav || !content) {
+                    console.error('Required DOM elements not found:', {
+                        contentHeader: !!contentHeader,
+                        contentDescription: !!contentDescription,
+                        sidebarNav: !!sidebarNav,
+                        content: !!content
+                    });
+                    return;
+                }
+                
+                // Update page title and description
+                contentHeader.textContent = data.title;
+                contentDescription.textContent = data.description;
                 
                 // Clear all content including any article content
                 content.innerHTML = '';
                 
                 // Restore the content header
-                const contentHeader = document.createElement('div');
-                contentHeader.className = 'content-header';
-                contentHeader.innerHTML = `
+                const newContentHeader = document.createElement('div');
+                newContentHeader.className = 'content-header';
+                newContentHeader.innerHTML = `
                     <h1>${data.title}</h1>
                     <p>${data.description}</p>
                 `;
-                content.appendChild(contentHeader);
+                content.appendChild(newContentHeader);
                 
                 // Generate sidebar navigation with new hierarchical format
-                generateSidebarNavigation(data.sections, sidebarNav);
+                if (typeof generateSidebarNavigation === 'function') {
+                    generateSidebarNavigation(data.sections, sidebarNav);
+                } else {
+                    console.error('generateSidebarNavigation function not available');
+                }
                 
                 // Generate main content sections with new format
-                generateMainContent(data.sections, content);
+                if (typeof generateMainContent === 'function') {
+                    generateMainContent(data.sections, content);
+                } else {
+                    console.error('generateMainContent function not available');
+                }
                 
                 // Update URL to remove any article parameters
                 window.history.replaceState({}, data.title, window.location.pathname);
                 
-                console.log('Loaded concepts data:', data);
+                console.log('Successfully loaded concepts data:', data);
                 
             } catch (error) {
                 console.error('Error loading concepts data:', error);
                 // Fallback error display
                 const content = document.querySelector('.content');
-                const errorDiv = document.createElement('div');
-                errorDiv.style.padding = '2rem';
-                errorDiv.style.textAlign = 'center';
-                errorDiv.style.color = '#ef4444';
-                errorDiv.innerHTML = `
-                    <h2>Error Loading Content</h2>
-                    <p>Failed to load concepts data. Please check the console for details.</p>
-                    <p><strong>Error:</strong> ${error.message}</p>
-                `;
-                content.appendChild(errorDiv);
+                if (content) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.style.padding = '2rem';
+                    errorDiv.style.textAlign = 'center';
+                    errorDiv.style.color = '#ef4444';
+                    errorDiv.innerHTML = `
+                        <h2>Error Loading Content</h2>
+                        <p>Failed to load concepts data. Please check the console for details.</p>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <button onclick="loadConceptsData()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--primary-gold); color: var(--dark-blue); border: none; border-radius: 5px; cursor: pointer;">
+                            Retry Loading
+                        </button>
+                    `;
+                    content.appendChild(errorDiv);
+                }
             }
         }
 
@@ -2170,8 +2302,88 @@
     <!-- Bootstrap JS Bundle (with Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Load concepts metadata -->
-    <script src="concepts/meta.js"></script>
-    <script src="concepts/all-meta.js"></script>
+    <!-- Load concepts metadata with error handling -->
+    <script>
+        // Function to load scripts with error handling
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = () => {
+                    console.error(`Failed to load script: ${src}`);
+                    reject(new Error(`Failed to load script: ${src}`));
+                };
+                document.head.appendChild(script);
+            });
+        }
+
+        // Load meta scripts with fallback - use synchronous approach
+        async function loadMetaScripts() {
+            console.log('Starting to load meta scripts...');
+            
+            // Try to load meta.js first
+            try {
+                await loadScript('./concepts/meta.js');
+                console.log('meta.js loaded successfully');
+            } catch (error) {
+                console.warn('Failed to load meta.js with ./ prefix, trying without');
+                try {
+                    await loadScript('concepts/meta.js');
+                    console.log('meta.js loaded successfully (fallback)');
+                } catch (fallbackError) {
+                    console.error('Could not load meta.js from any path');
+                }
+            }
+
+            // Try to load all-meta.js
+            try {
+                await loadScript('./concepts/all-meta.js');
+                console.log('all-meta.js loaded successfully');
+            } catch (error) {
+                console.warn('Failed to load all-meta.js with ./ prefix, trying without');
+                try {
+                    await loadScript('concepts/all-meta.js');
+                    console.log('all-meta.js loaded successfully (fallback)');
+                } catch (fallbackError) {
+                    console.error('Could not load all-meta.js from any path');
+                }
+            }
+
+            // Wait a bit to ensure scripts are processed
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            console.log('Meta scripts loading completed. stdLearnMeta available:', !!window.stdLearnMeta);
+            console.log('Current location:', window.location.href);
+            console.log('Base URL:', window.location.origin + window.location.pathname);
+            
+            // Debug: Log which scripts are loaded
+            const scripts = document.querySelectorAll('script[src]');
+            console.log('Loaded scripts:', Array.from(scripts).map(s => s.src));
+            
+            // Ensure all functions are globally available
+            window.loadConceptsData = loadConceptsData;
+            window.generateSidebarNavigation = generateSidebarNavigation;
+            window.generateMainContent = generateMainContent;
+            window.getSectionDifficultyLevel = getSectionDifficultyLevel;
+            window.getDifficultyColor = getDifficultyColor;
+            window.getIconForSection = getIconForSection;
+            
+            // Initialize page after scripts are loaded
+            if (typeof loadConceptsData === 'function') {
+                console.log('Calling loadConceptsData...');
+                loadConceptsData();
+            } else {
+                console.error('loadConceptsData function not available');
+            }
+        }
+
+        // Load scripts when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadMetaScripts);
+        } else {
+            loadMetaScripts();
+        }
+    </script>
 </body>
 </html>
