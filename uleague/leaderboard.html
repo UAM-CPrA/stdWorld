@@ -589,18 +589,21 @@
         // Load nodes data from the actual JSON file
         let nodesData = null;
         
-        // Fetch nodes data
-        fetch('../nodes.json')
-            .then(response => response.json())
-            .then(data => {
-                nodesData = data;
-                initializeLeaderboard();
-            })
-            .catch(error => {
-                console.error('Error loading nodes data:', error);
-                // Fallback to hardcoded active node
-                initializeLeaderboard();
-            });
+        // Get nodes data directly from nodes.js
+        function initializeWithNodes() {
+            nodesData = window.stdWorldNodes || {};
+            initializeLeaderboard();
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.stdWorldNodes) {
+                initializeWithNodes();
+            } else {
+                // Wait for nodes.js to load
+                window.addEventListener('load', initializeWithNodes);
+            }
+        });
 
         // Country flag mapping
         const countryFlags = {
@@ -869,5 +872,8 @@
         // Auto-refresh every 5 minutes
         setInterval(refreshRankings, 5 * 60 * 1000);
     </script>
+    
+    <!-- Load nodes data -->
+    <script src="../nodes.js"></script>
 </body>
 </html>

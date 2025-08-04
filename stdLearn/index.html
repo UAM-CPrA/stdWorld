@@ -1223,8 +1223,8 @@
         // Load concepts data and populate the page
         async function loadConceptsData() {
             try {
-                const response = await fetch('concepts/meta.json');
-                const data = await response.json();
+                // Use meta data directly from meta.js
+                const data = window.stdLearnMeta || {};
                 
                 // Update page title and description
                 document.querySelector('.content-header h1').textContent = data.title;
@@ -1681,16 +1681,13 @@
         // Function to load content from a specific folder
         async function loadFolderContent(folderPath) {
             try {
-                // Construct the meta.json path for the folder
-                const metaPath = `${folderPath}/meta.json`;
-                console.log('Loading folder content from:', metaPath);
+                // Use meta data from all-meta.js
+                const data = window.getStdLearnMeta ? window.getStdLearnMeta(folderPath) : null;
+                console.log('Loading folder content from:', folderPath, data);
                 
-                const response = await fetch(metaPath);
-                if (!response.ok) {
-                    throw new Error(`Failed to load ${metaPath}: ${response.status}`);
+                if (!data) {
+                    throw new Error(`No meta data found for ${folderPath}`);
                 }
-                
-                const data = await response.json();
                 
                 // Update page title and description
                 document.querySelector('.content-header h1').textContent = data.title;
@@ -2170,6 +2167,9 @@
     
     <!-- Bootstrap JS Bundle (with Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Load concepts metadata -->
+    <script src="concepts/all-meta.js"></script>
     
     <!-- 404 Handler -->
     <script src="_404/404-handler.js"></script>

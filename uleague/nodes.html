@@ -871,8 +871,8 @@
 
         async function loadMapNodesData() {
             try {
-                const response = await fetch('../nodes.json');
-                const data = await response.json();
+                // Use nodes data directly from nodes.js
+                const data = window.stdWorldNodes || {};
                 
                 // Coordenadas predefinidas para nodos que no las tienen en el JSON
                 const defaultCoordinates = {
@@ -1058,8 +1058,8 @@
         // Load nodes data and organize by continent
         async function loadNodes() {
             try {
-                const response = await fetch('../nodes.json');
-                const nodesData = await response.json();
+                // Use nodes data directly from nodes.js
+                const nodesData = window.stdWorldNodes || {};
                 
                 const container = document.getElementById('continentsContainer');
                 container.innerHTML = '';
@@ -1277,5 +1277,8 @@
             });
         }
     </script>
+    
+    <!-- Load nodes data -->
+    <script src="../nodes.js"></script>
 </body>
 </html>

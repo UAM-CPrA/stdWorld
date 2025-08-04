@@ -1649,8 +1649,8 @@
 
         async function loadNodesData() {
             try {
-                const response = await fetch('../nodes_backup.json');
-                const data = await response.json();
+                // Use nodes backup data directly from nodes_backup.js
+                const data = window.stdWorldNodesBackup || {};
                 
                 // Coordenadas predefinidas para nodos que no las tienen en el JSON
                 const defaultCoordinates = {
@@ -1851,5 +1851,8 @@
             }
         });
     </script>
+    
+    <!-- Load nodes backup data -->
+    <script src="../nodes_backup.js"></script>
 </body>
 </html>

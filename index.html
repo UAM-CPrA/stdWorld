@@ -584,19 +584,19 @@
       </div>
 
       <script>
-        // Dynamically load node info from nodes.json and render by continent sections
+        // Dynamically load node info from nodes.js and render by continent sections
         document.addEventListener('DOMContentLoaded', function () {
-          fetch('nodes.json')
-            .then(response => response.json())
-            .then(continentData => {
-              const continentSections = document.getElementById('continentSections');
+          // Use the stdWorldNodes data directly (loaded from nodes.js)
+          const continentData = window.stdWorldNodes || {};
+          
+          const continentSections = document.getElementById('continentSections');
 
-              // Define continent order and include Oceania
-              const continentOrder = ['Europe', 'Asia', 'North America', 'South America', 'Africa', 'Oceania'];
+          // Define continent order and include Oceania
+          const continentOrder = ['Europe', 'Asia', 'North America', 'South America', 'Africa', 'Oceania'];
 
-              continentOrder.forEach(continent => {
-                const nodes = continentData[continent] || {};
-                const nodeCount = Object.keys(nodes).length;
+          continentOrder.forEach(continent => {
+            const nodes = continentData[continent] || {};
+            const nodeCount = Object.keys(nodes).length;
 
                 // Create continent section (even if empty for Oceania)
                 const continentSection = document.createElement('div');
@@ -710,7 +710,6 @@
                   }
                 };
               });
-            });
         });
       </script>
     </div>
@@ -718,6 +717,7 @@
 
 
 
+    <script src="nodes.js"></script>
     <script src="dijkstra.js"></script>
     <script src="main.js"></script>
     <!-- Bootstrap JS Bundle (with Popper) -->
