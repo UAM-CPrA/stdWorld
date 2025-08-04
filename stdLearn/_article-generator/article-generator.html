@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Generator - std::Learn</title>
+    <link rel="icon" type="image/svg+xml" href="../_img/favicon.svg">
+    <style>
+        :root {
+            --primary-gold: #fbbf24;
+            --secondary-gold: #f59e0b;
+            --white: #ffffff;
+            --light-grey: #374151;
+            --dark-blue: #1e293b;
+            --darker-blue: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-300: #cbd5e1;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --teal: #14b8a6;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --purple: #a855f7;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', 'Consolas', monospace;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--darker-blue) 0%, var(--slate-800) 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--slate-800) 0%, var(--teal) 100%);
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--slate-700);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary-gold), var(--white));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .template-selector {
+            background: var(--slate-800);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--slate-700);
+        }
+
+        .template-selector h2 {
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .template-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .template-option {
+            border: 2px solid var(--slate-600);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background: var(--slate-700);
+        }
+
+        .template-option:hover {
+            border-color: var(--primary-gold);
+            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.2);
+        }
+
+        .template-option.selected {
+            border-color: var(--teal);
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .template-option h3 {
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .template-option p {
+            color: var(--text-secondary);
+        }
+
+        .form-container {
+            background: var(--slate-800);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--slate-700);
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--slate-600);
+            border-radius: 10px;
+            background: var(--slate-700);
+        }
+
+        .form-section h3 {
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--slate-600);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: var(--slate-600);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .section-manager {
+            background: var(--slate-800);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--slate-700);
+        }
+
+        .section-manager h3 {
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .available-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-card {
+            border: 2px dashed var(--slate-600);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background: var(--slate-700);
+        }
+
+        .section-card:hover {
+            border-color: var(--primary-gold);
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .section-card h4 {
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-card p {
+            color: var(--text-secondary);
+        }
+
+        .selected-sections {
+            border: 2px solid var(--teal);
+            padding: 1.5rem;
+            border-radius: 10px;
+            background: rgba(20, 184, 166, 0.1);
+            min-height: 100px;
+        }
+
+        .selected-section-item {
+            background: var(--slate-600);
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border-left: 4px solid var(--slate-500);
+            transition: all 0.3s ease;
+        }
+
+        .selected-section-item.edited {
+            border-left-color: var(--teal);
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .selected-section-item.edited span {
+            color: var(--teal);
+            font-weight: 600;
+        }
+
+        .selected-section-item span {
+            color: var(--text-primary);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-gold), var(--teal));
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--slate-600);
+            color: var(--text-primary);
+            border: 1px solid var(--slate-500);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-gold);
+            color: var(--white);
+            border-color: var(--primary-gold);
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .preview-container {
+            background: var(--slate-800);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--slate-700);
+        }
+
+        .preview-container h3 {
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-preview {
+            background: var(--darker-blue);
+            color: var(--text-primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--slate-700);
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .actions .btn {
+            margin: 0 0.5rem;
+        }
+
+        .progress-indicator {
+            background: var(--slate-800);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid var(--slate-700);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .progress-step.active {
+            color: var(--primary-gold);
+        }
+
+        .progress-step.completed {
+            color: var(--green);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--slate-600);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .step-number.active {
+            background: var(--primary-gold);
+            color: var(--darker-blue);
+        }
+
+        .step-number.completed {
+            background: var(--green);
+            color: var(--white);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: var(--white);
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--slate-800);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            border: 1px solid var(--slate-700);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-gold);
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+            color: var(--primary-gold);
+        }
+
+        /* Dynamic concept cards editor */
+        .content-editor {
+            margin-bottom: 1.5rem;
+        }
+
+        .content-editor label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .content-editor textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 1px solid var(--slate-600);
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            background: var(--slate-600);
+            color: var(--text-primary);
+        }
+
+        .content-editor input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--slate-600);
+            border-radius: 8px;
+            background: var(--slate-600);
+            color: var(--text-primary);
+        }
+
+        .editor-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--slate-600);
+            margin-bottom: 1rem;
+        }
+
+        .editor-tab {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .editor-tab.active {
+            opacity: 1;
+            border-bottom-color: var(--primary-gold);
+            color: var(--primary-gold);
+        }
+
+        .editor-tab-content {
+            display: none;
+        }
+
+        .editor-tab-content.active {
+            display: block;
+        }
+
+        /* Dynamic concept cards editor */
+        .concept-item {
+            background: var(--slate-700);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--slate-600);
+        }
+
+        .concept-item h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-gold);
+        }
+
+        .concept-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .add-concept-btn {
+            background: var(--teal);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-concept-btn {
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .equation-editor {
+            background: var(--darker-blue);
+            color: var(--text-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+            margin-bottom: 1rem;
+            border: 1px solid var(--slate-700);
+        }
+
+        .equation-preview {
+            background: var(--slate-700);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--slate-600);
+            margin-top: 0.5rem;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        /* Featured elements styles */
+        .featured-element {
+            background: var(--slate-600);
+            border: 1px solid var(--teal);
+            border-radius: 5px;
+            padding: 0.5rem 0.8rem;
+            margin: 0.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .featured-element-remove {
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 3px;
+            padding: 0.2rem 0.4rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        .featured-elements-container {
+            border: 2px dashed var(--slate-600);
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            background: var(--slate-700);
+        }
+
+        .featured-elements-container.has-elements {
+            border-color: var(--teal);
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .no-featured-elements {
+            color: var(--text-muted);
+            font-style: italic;
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .template-options {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+        }
+
+        /* Upload Status Styles */
+        .upload-status {
+            padding: 1rem;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .upload-status.loading {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--yellow);
+            border: 1px solid var(--yellow);
+        }
+
+        .upload-status.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--green);
+            border: 1px solid var(--green);
+        }
+
+        .upload-status.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--red);
+            border: 1px solid var(--red);
+        }
+
+        /* Authority Section Styles */
+        .authority-section {
+            background: var(--slate-700);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid var(--slate-600);
+        }
+
+        .authority-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .authority-item {
+            background: var(--slate-600);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            border: 1px solid var(--slate-500);
+        }
+
+        .authority-item h4 {
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .authority-item p {
+            margin: 0;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .authority-item small {
+            display: block;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+
+        /* Additional styles for content sections */
+        .content-section {
+            background: var(--slate-700);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            border: 1px solid var(--slate-600);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--slate-600);
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .section-title {
+            color: var(--primary-gold);
+            margin: 0;
+        }
+
+        .main-content {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .info-box {
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid var(--teal);
+        }
+
+        .info-box.info {
+            background: rgba(20, 184, 166, 0.1);
+            border-left-color: var(--teal);
+        }
+
+        .info-box.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: var(--warning);
+        }
+
+        .info-box.tip {
+            background: rgba(16, 185, 129, 0.1);
+            border-left-color: var(--green);
+        }
+
+        .info-box.insight {
+            background: rgba(168, 85, 247, 0.1);
+            border-left-color: var(--purple);
+        }
+
+        .info-box-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .code-block {
+            background: var(--darker-blue);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border: 1px solid var(--slate-600);
+        }
+
+        .code-block h4 {
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+        }
+
+        .code-block pre {
+            margin: 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        .complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .complexity-table th,
+        .complexity-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid var(--slate-600);
+        }
+
+        .complexity-table th {
+            background: var(--slate-600);
+            color: var(--primary-gold);
+            font-weight: 600;
+        }
+
+        .complexity-table td code {
+            background: var(--slate-600);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .problem-card, .contest-card {
+            background: var(--slate-600);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--slate-500);
+        }
+
+        .problem-card h5, .contest-card h5 {
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-meta, .contest-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-meta span, .contest-meta span {
+            background: var(--slate-500);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        .problem-link {
+            color: var(--teal);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .problem-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>std::Learn Article Generator</h1>
+        <p>Create competitive programming content without coding!</p>
+    </header>
+
+    <div class="container">
+        <!-- Progress Indicator -->
+        <div class="progress-indicator">
+            <div class="progress-steps">
+                <div class="progress-step active" id="step1">
+                    <span class="step-number active">1</span>
+                    <span>Choose Template</span>
+                </div>
+                <div class="progress-step" id="step2">
+                    <span class="step-number">2</span>
+                    <span>Basic Info</span>
+                </div>
+                <div class="progress-step" id="step3">
+                    <span class="step-number">3</span>
+                    <span>Add Sections</span>
+                </div>
+                <div class="progress-step" id="step4">
+                    <span class="step-number">4</span>
+                    <span>Generate & Download</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Template Selection -->
+        <div class="template-selector">
+            <h2>📋 Choose Your Content Type</h2>
+            <div class="template-options">
+                <div class="template-option" data-template="concepts">
+                    <h3>📝 Create New Article</h3>
+                    <p>Create educational content about competitive programming algorithms, data structures, and problem-solving techniques.</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Algorithm explanations</li>
+                        <li>Code implementations</li>
+                        <li>Complexity analysis</li>
+                        <li>Practice problems</li>
+                        <li>Visual examples</li>
+                    </ul>
+                </div>
+                <div class="template-option" data-template="upload">
+                    <h3>📤 Upload & Edit</h3>
+                    <p>Upload an existing HTML file to edit and update its content. Perfect for revisions, updates, and collaborative editing.</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Parse existing structure</li>
+                        <li>Edit all sections</li>
+                        <li>Update author information</li>
+                        <li>Maintain formatting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Basic Information Form -->
+        <div class="form-container" id="basicInfoForm">
+            <h2>📝 Basic Information</h2>
+            
+            <div class="form-section">
+                <h3>📄 Document Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="documentTitle">Title *</label>
+                        <input type="text" id="documentTitle" placeholder="Enter your document title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="documentLevel">Difficulty Level</label>
+                        <select id="documentLevel">
+                            <option value="Beginner" data-color="#10b981">🟢 Beginner</option>
+                            <option value="Intermediate" data-color="#f59e0b">🟡 Intermediate</option>
+                            <option value="Advanced" data-color="#ef4444">🔴 Advanced</option>
+                            <option value="ICPC" data-color="#a855f7">🟣 ICPC/Expert</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="documentDescription">Description/Subtitle</label>
+                    <textarea id="documentDescription" placeholder="Brief description of what this document covers"></textarea>
+                </div>
+            </div>
+
+            <!-- Featured Elements Section -->
+            <div class="form-section">
+                <h3>⭐ Featured Elements</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Add key elements that make this content special and should be highlighted in meta.json</p>
+                
+                <div class="form-group">
+                    <label for="newFeaturedElement">Add Featured Element</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="newFeaturedElement" placeholder="e.g., Interactive visualization, Complexity analysis, Multiple solutions">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addFeaturedElement()">Add</button>
+                    </div>
+                </div>
+                
+                <div id="featuredElementsList" style="margin-top: 1rem;">
+                    <div class="featured-elements-container">
+                        <div class="no-featured-elements">No featured elements added yet. Add elements that make your content special.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Concepts-specific fields -->
+            <div class="form-section" id="conceptsFields" style="display: none;">
+                <h3>🎯 Algorithm Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="conceptName">Algorithm/Concept Name</label>
+                        <input type="text" id="conceptName" placeholder="e.g., Binary Search, Dynamic Programming">
+                    </div>
+                    <div class="form-group">
+                        <label for="readingTime">Estimated Reading Time (minutes)</label>
+                        <input type="number" id="readingTime" placeholder="15" min="1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="timeComplexity">Time Complexity</label>
+                        <input type="text" id="timeComplexity" placeholder="e.g., O(log n), O(n²)">
+                    </div>
+                    <div class="form-group">
+                        <label for="spaceComplexity">Space Complexity</label>
+                        <input type="text" id="spaceComplexity" placeholder="e.g., O(1), O(n)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="problemTypes">Common Problem Types</label>
+                    <input type="text" id="problemTypes" placeholder="e.g., Searching, Sorting, Graph Traversal">
+                    <small style="color: var(--text-muted); font-style: italic; display: block; margin-top: 0.25rem;">Separate multiple types with commas</small>
+                </div>
+            </div>
+
+            <!-- Upload-specific fields -->
+            <div class="form-section" id="uploadFields" style="display: none;">
+                <h3>📤 Upload Existing Article</h3>
+                <div class="form-group">
+                    <label for="htmlFileUpload">Upload HTML File</label>
+                    <input type="file" id="htmlFileUpload" accept=".html" onchange="handleFileUpload(event)">
+                    <small style="color: var(--text-muted); font-style: italic; display: block; margin-top: 0.25rem;">Upload the HTML file you want to edit. The generator will parse its content and structure.</small>
+                </div>
+                <div id="uploadStatus" style="margin-top: 1rem; padding: 1rem; border-radius: 5px; display: none;">
+                    <!-- Upload status will be shown here -->
+                </div>
+                <div id="parsedInfo" style="margin-top: 1rem; background: var(--slate-700); padding: 1rem; border-radius: 5px; display: none; color: var(--text-primary); border: 1px solid var(--slate-600);">
+                    <h4>📋 Parsed Article Information:</h4>
+                    <div id="parsedContent">
+                        <!-- Parsed content info will be shown here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authority Section (Always visible for all templates) -->
+            <div class="form-section">
+                <h3>👤 Authority & Attribution</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Specify who created and contributed to this article</p>
+                
+                <div class="form-group">
+                    <label for="originalAuthor">Original Author *</label>
+                    <input type="text" id="originalAuthor" placeholder="John Doe" required>
+                    <small style="color: var(--text-muted); font-style: italic; display: block; margin-top: 0.25rem;">The person who originally created this content</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="authorAffiliation">Author Affiliation</label>
+                    <input type="text" id="authorAffiliation" placeholder="University/Organization">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contributors">Contributors/Editors</label>
+                    <input type="text" id="contributors" placeholder="Jane Smith, Bob Johnson (separate multiple with commas)">
+                    <small style="color: var(--text-muted); font-style: italic; display: block; margin-top: 0.25rem;">People who have updated or edited this content</small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="creationDate">Creation Date</label>
+                        <input type="date" id="creationDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastUpdated">Last Updated</label>
+                        <input type="date" id="lastUpdated">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="version">Version</label>
+                    <input type="text" id="version" placeholder="1.0" value="1.0">
+                    <small style="color: var(--text-muted); font-style: italic; display: block; margin-top: 0.25rem;">Increment for major updates (e.g., 1.0, 1.1, 2.0)</small>
+                </div>
+            </div>
+
+            <!-- File Location Settings -->
+            <div class="form-section">
+                <h3>📁 File Location Settings</h3>
+                <div class="form-group">
+                    <label for="customPath">Custom Path</label>
+                    <input type="text" id="customPath" placeholder="e.g., concepts/algorithms/binary-search.html">
+                    <small style="color: var(--text-muted); font-style: italic; display: block; margin-top: 0.25rem;">Enter the full path where you want to save the file (including filename)</small>
+                </div>
+                <div id="finalPathPreview" style="background: var(--slate-700); padding: 0.8rem; border-radius: 5px; margin-top: 1rem; font-family: monospace; font-size: 0.9rem; border: 1px solid var(--slate-600);">
+                    <strong style="color: var(--primary-gold);">Final path:</strong> <span id="pathPreviewText" style="color: var(--text-secondary);">Enter a custom path</span>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    This path determines where the HTML file will be saved and which meta.json to update. Include the full path with filename and .html extension.
+                </p>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="proceedToSections()">Next: Add Sections →</button>
+            </div>
+        </div>
+
+        <!-- Section Manager -->
+        <div class="section-manager" id="sectionManager" style="display: none;">
+            <h3>🧩 Build Your Content Sections</h3>
+            <p>Drag and drop sections to build your document structure:</p>
+            
+            <h4>Available Sections:</h4>
+            <div class="available-sections" id="availableSections">
+                <!-- Sections will be populated by JavaScript -->
+            </div>
+
+            <h4>Your Document Structure:</h4>
+            <div class="selected-sections" id="selectedSections">
+                <p style="text-align: center; color: var(--light-grey); margin: 2rem 0;">
+                    Click on sections above to add them to your document
+                </p>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-secondary" onclick="goBackToBasicInfo()">← Back</button>
+                <button class="btn btn-primary" onclick="generatePreview()">Generate Preview →</button>
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-container" id="previewContainer" style="display: none;">
+            <h3>👀 Generated HTML Preview</h3>
+            <div class="code-preview" id="codePreview">
+                <!-- Generated HTML will appear here -->
+            </div>
+            
+            <!-- Meta JSON Updates Section -->
+            <div id="metaUpdatesSection" style="margin-top: 2rem;">
+                <h3>📋 Meta.json Updates Required</h3>
+                <p>Add this entry to the appropriate meta.json file:</p>
+                <div class="code-preview" id="metaPreview" style=" max-height: 200px;">
+                    <!-- Meta JSON will appear here -->
+                </div>
+            </div>
+
+            <!-- File Locations Section -->
+            <div id="fileLocationsSection" style="margin-top: 2rem;">
+                <h3>📁 File Locations for Pull Request</h3>
+                <div id="fileInstructions" style="background: var(--slate-700); padding: 1.5rem; border-radius: 10px; color: var(--text-primary); border: 1px solid var(--slate-600);">
+                    <!-- File instructions will appear here -->
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-secondary" onclick="goBackToSections()">← Back to Sections</button>
+                <button class="btn btn-primary" onclick="downloadHTML()">📥 Download HTML</button>
+                <button class="btn btn-secondary" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+                <button class="btn btn-secondary" onclick="copyMetaJSON()">📋 Copy Meta JSON</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Content Editor Modal -->
+    <div class="modal" id="contentEditor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="editorTitle">Edit Section Content</h3>
+                <button class="close-btn" onclick="closeEditor()">&times;</button>
+            </div>
+            
+            <!-- Basic Info (always shown) -->
+            <div class="content-editor">
+                <label for="sectionTitle">Section Title</label>
+                <input type="text" id="sectionTitle" placeholder="Enter section title">
+            </div>
+            <div class="content-editor">
+                <label for="sectionIcon">Icon</label>
+                <input type="text" id="sectionIcon" placeholder="🎯">
+            </div>
+
+            <!-- Dynamic content area for section-specific fields -->
+            <div id="dynamicContent">
+                <!-- Section-specific fields will be inserted here -->
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-secondary" onclick="closeEditor()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSection()">Save Section</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="article-generator-fixed.js"></script>
+</body>
+</html>

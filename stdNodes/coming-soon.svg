@@ -1,0 +1,24 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Clock icon -->
+  <circle cx="150" cy="120" r="35" fill="none" stroke="#000" stroke-width="3"/>
+  <line x1="150" y1="95" x2="150" y2="120" stroke="#000" stroke-width="2"/>
+  <line x1="150" y1="120" x2="165" y2="135" stroke="#000" stroke-width="2"/>
+  
+  <!-- Text -->
+  <text x="150" y="180" text-anchor="middle" fill="#000" font-family="Consolas, monospace" font-size="18" font-weight="bold">COMING</text>
+  <text x="150" y="200" text-anchor="middle" fill="#000" font-family="Consolas, monospace" font-size="18" font-weight="bold">SOON</text>
+  
+  <!-- std::Node text -->
+  <text x="150" y="230" text-anchor="middle" fill="#000" font-family="Consolas, monospace" font-size="14">std::Node</text>
+  
+  <!-- Animated dots -->
+  <circle cx="130" cy="250" r="3" fill="#000">
+    <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="150" cy="250" r="3" fill="#000">
+    <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="170" cy="250" r="3" fill="#000">
+    <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+  </circle>
+</svg>

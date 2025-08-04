@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competition Rules - std::ULeague</title>
+    <link rel="icon" type="image/png" href="../stdLearn/_img/favicon.png">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-orange: #ff6b35;
+            --secondary-orange: #ff8c42;
+            --accent-orange: #ff5722;
+            --light-orange: #ffab91;
+            --primary-white: #ffffff;
+            --off-white: #fafafa;
+            --light-gray: #f5f5f5;
+            --text-dark: #333333;
+            --text-gray: #666666;
+            --text-light-gray: #999999;
+            --border-light: #e0e0e0;
+            --success-green: #4caf50;
+            --warning-orange: #ff9800;
+            --error-red: #f44336;
+            --shadow-light: 0 4px 6px -1px rgba(255, 107, 53, 0.1);
+            --shadow-medium: 0 10px 15px -3px rgba(255, 107, 53, 0.1);
+            --shadow-heavy: 0 25px 50px -12px rgba(255, 107, 53, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
+            border-radius: 4px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid var(--border-light) !important;
+            box-shadow: var(--shadow-medium) !important;
+        }
+
+        .navbar-brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-orange) !important;
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            margin: 0 0.2rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-orange) !important;
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .dropdown-menu {
+            background: var(--primary-white) !important;
+            border: 1px solid var(--border-light) !important;
+            border-radius: 12px !important;
+            box-shadow: var(--shadow-heavy) !important;
+            padding: 0.5rem !important;
+        }
+
+        .dropdown-item {
+            color: var(--text-dark) !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 107, 53, 0.1) !important;
+            color: var(--primary-orange) !important;
+        }
+
+        /* Main content */
+        .main-content {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            color: var(--primary-white);
+            padding: 4rem 0 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-white);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--primary-white);
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Content layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+
+        /* Table of contents */
+        .toc {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+            background: var(--primary-white);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .toc h3 {
+            color: var(--primary-orange);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 0;
+            display: block;
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: var(--primary-orange);
+            border-left-color: var(--primary-orange);
+            transform: translateX(4px);
+        }
+
+        .toc a.active {
+            color: var(--primary-orange);
+            border-left-color: var(--primary-orange);
+        }
+
+        /* Main content */
+        .rules-content {
+            background: var(--primary-white);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 120px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section h2 {
+            color: var(--primary-orange);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 {
+            color: var(--text-dark);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .section h4 {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        .section p {
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .section ul, .section ol {
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        /* Special content boxes */
+        .info-box {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--secondary-orange);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .info-box .title {
+            color: var(--secondary-orange);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box p {
+            color: var(--text-gray);
+            margin-bottom: 0;
+        }
+
+        .warning-box {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid var(--warning-orange);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box .title {
+            color: var(--warning-orange);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warning-box p {
+            color: var(--text-gray);
+            margin-bottom: 0;
+        }
+
+        .success-box {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success-green);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .success-box .title {
+            color: var(--success-green);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .success-box p {
+            color: var(--text-gray);
+            margin-bottom: 0;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--light-gray);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        /* Tables */
+        .rules-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--light-gray);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .rules-table th {
+            background: var(--primary-orange);
+            color: var(--primary-white);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .rules-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-gray);
+        }
+
+        .rules-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .toc {
+                position: static;
+                order: -1;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .rules-content {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .rules-content {
+                padding: 1.5rem;
+            }
+
+            .section h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">std::ULeague</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nodes.html">Nodes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="leaderboard.html">Rankings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="scoring.html">Scoring</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-1"></i> Resources
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../index.html">
+                                <i class="fas fa-world me-2"></i>std::World
+                            </a></li>
+                            <li><a class="dropdown-item" href="../stdLearn/index.html">
+                                <i class="fas fa-graduation-cap me-2"></i>std::Learn
+                            </a></li>
+                            <li><a class="dropdown-item active" href="rules.html">
+                                <i class="fas fa-book me-2"></i>Competition Rules
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title">Competition Rules</h1>
+                <p class="page-subtitle">
+                    Official rules and regulations governing std::ULeague competitions and league structure
+                </p>
+            </div>
+        </section>
+
+        <!-- Content -->
+        <div class="content-layout">
+            <!-- Table of Contents -->
+            <nav class="toc">
+                <h3><i class="fas fa-list me-2"></i>Contents</h3>
+                <ul>
+                    <li><a href="#overview">League Overview</a></li>
+                    <li><a href="#structure">Competition Structure</a></li>
+                    <li><a href="#journey-format">5-Day Journey Format</a></li>
+                    <li><a href="#eligibility">Eligibility</a></li>
+                    <li><a href="#nodes">Node System</a></li>
+                    <li><a href="#problems">Problem Setting</a></li>
+                    <li><a href="#scoring">Scoring System</a></li>
+                    <li><a href="#conduct">Code of Conduct</a></li>
+                    <li><a href="#technical">Technical Requirements</a></li>
+                    <li><a href="#disputes">Disputes & Appeals</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="rules-content">
+                <!-- League Overview -->
+                <section id="overview" class="section">
+                    <h2><i class="fas fa-info-circle"></i> League Overview</h2>
+                    
+                    <p>
+                        std::ULeague is an international competitive programming league designed to create a sustainable, 
+                        inclusive ecosystem that connects students, professors, alumni, and programming enthusiasts worldwide. 
+                        Unlike traditional competitions that end with graduation, our league provides a lifelong platform 
+                        for competitive programming.
+                    </p>
+
+                    <h3>Mission Statement</h3>
+                    <p>
+                        To democratize competitive programming by creating a distributed, collaborative platform where 
+                        the global programming community contributes to and benefits from high-quality problem sets 
+                        while fostering continuous learning and competition.
+                    </p>
+
+                    <div class="info-box">
+                        <div class="title">
+                            <i class="fas fa-lightbulb"></i>
+                            Key Innovation
+                        </div>
+                        <p>
+                            Our distributed problem-setting model ensures sustainable growth while maintaining high 
+                            quality through community-driven creation and peer review.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Competition Structure -->
+                <section id="structure" class="section">
+                    <h2><i class="fas fa-sitemap"></i> Competition Structure</h2>
+
+                    <h3>5-Day Journey Format</h3>
+                    <p>
+                        std::ULeague uses an innovative 5-day collaborative journey format that promotes continuous 
+                        engagement and team collaboration. Each journey runs from Thursday to Monday, creating a 
+                        unique competitive programming experience.
+                    </p>
+
+                    <div class="info-box">
+                        <div class="title">
+                            <i class="fas fa-calendar-week"></i>
+                            Journey Timeline
+                        </div>
+                        <p>
+                            <strong>Day 1:</strong> Journey begins, new problems released<br>
+                            <strong>Day 1 - Day 5:</strong> Collaborative solving period<br>
+                            <strong>After Day 5:</strong> Solutions published
+                        </p>
+                    </div>
+
+                    <h4>Journey Mechanics</h4>
+                    <ul>
+                        <li><strong>Duration:</strong> 5 days (Thursday 00:00 UTC to Monday 23:59 UTC)</li>
+                        <li><strong>Problems:</strong> 10 problems per journey</li>
+                        <li><strong>Collaboration:</strong> Team members can help each other (recommended)</li>
+                        <li><strong>AI Tools:</strong> Allowed</li>
+                        <li><strong>Daily Penalty:</strong> 20% point reduction every 24 hours</li>
+                    </ul>
+
+                    <h4>Scoring Timeline</h4>
+                    <ul>
+                        <li><strong>Day 1:</strong> 100% points for correct solutions</li>
+                        <li><strong>Day 2:</strong> 80% points for correct solutions</li>
+                        <li><strong>Day 3:</strong> 60% points for correct solutions</li>
+                        <li><strong>Day 4:</strong> 40% points for correct solutions</li>
+                        <li><strong>Day 5:</strong> 20% points for correct solutions</li>
+                    </ul>
+
+                    <h3>Season Format</h3>
+                    <p>
+                        Each std::ULeague season runs for one academic year (September to June), consisting of 
+                        regular 5-day journeys throughout the season.
+                    </p>
+
+                    <h4>5-Day Journeys</h4>
+                    <ul>
+                        <li><strong>Frequency:</strong> Weekly</li>
+                        <li><strong>Format:</strong> 5-day collaborative journey</li>
+                        <li><strong>Problems:</strong> 10 problems of varying difficulty</li>
+                        <li><strong>Participation:</strong> Individual and team participation</li>
+                    </ul>
+
+                    <table class="rules-table">
+                        <thead>
+                            <tr>
+                                <th>Competition Type</th>
+                                <th>Duration</th>
+                                <th>Problems</th>
+                                <th>Frequency</th>
+                                <th>Format</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Journey</td>
+                                <td>5 days</td>
+                                <td>10 problems</td>
+                                <td>Weekly</td>
+                                <td>Collaborative</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="success-box">
+                        <div class="title">
+                            <i class="fas fa-lightbulb"></i>
+                            Collaborative Learning
+                        </div>
+                        <p>
+                            The 5-day format encourages deep learning and collaboration, allowing participants 
+                            to discuss approaches, learn from each other, and grow their problem-solving skills 
+                            in a supportive environment.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 5-Day Journey Format -->
+                <section id="journey-format" class="section">
+                    <h2><i class="fas fa-calendar-week"></i> 5-Day Journey Format</h2>
+
+                    <p>
+                        The innovative 5-day journey format is the cornerstone of std::ULeague, designed to promote 
+                        collaborative learning while maintaining competitive elements. This format addresses the 
+                        limitations of traditional short-duration contests.
+                    </p>
+
+                    <h3>Journey Phases</h3>
+                    
+                    <h4>Phase 1: Launch</h4>
+                    <ul>
+                        <li>Problems released at Thursdays 12:00 UTC</li>
+                        <li>Teams can start solving immediately</li>
+                        <li>Full points available (100%)</li>
+                        <li>Initial problem analysis and strategy planning</li>
+                    </ul>
+
+                    <h4>Phase 2: Collaborative Period (Thursday-Tuesday)</h4>
+                    <ul>
+                        <li>Node members can discuss approaches</li>
+                        <li>Knowledge sharing and learning encouraged</li>
+                        <li>For each 24 hours, 20% point reduction maintains urgency</li>
+                        <li>Deep problem exploration and implementation</li>
+                    </ul>
+
+                    <h4>Phase 3: Final Push</h4>
+                    <ul>
+                        <li>Last chance for submissions</li>
+                        <li>Journey ends at Tuesdays 11:59 UTC</li>
+                        <li>Minimum 20% points still available</li>
+                        <li>After journey ends: Solution publication and discussion</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <div class="title">
+                            <i class="fas fa-users"></i>
+                            Collaborative Philosophy
+                        </div>
+                        <p>
+                            Unlike traditional competitions that emphasize individual speed, our journey format 
+                            encourages learning, discussion, and knowledge sharing while maintaining competitive 
+                            elements through time-based scoring.
+                        </p>
+                    </div>
+
+                    <h3>AI Tools and Resources</h3>
+                    <p>
+                        std::ULeague embraces the modern programming landscape:
+                    </p>
+                    <ul>
+                        <li><strong>AI Tools:</strong> Allowed</li>
+                        <li><strong>Online Resources:</strong> Documentation, tutorials, forums allowed</li>
+                        <li><strong>Collaboration Tools:</strong> Team communication and shared workspaces allowed</li>
+                    </ul>
+
+                    <div class="warning-box">
+                        <div class="title">
+                            <i class="fas fa-graduation-cap"></i>
+                            Educational Priority
+                        </div>
+                        <p>
+                            While AI tools are allowed, participants are encouraged to understand solutions 
+                            and learn from the problem-solving process.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Eligibility -->
+                <section id="eligibility" class="section">
+                    <h2><i class="fas fa-users"></i> Eligibility</h2>
+
+                    <h3>General Eligibility</h3>
+                    <p>
+                        std::ULeague is open to all individuals interested in competitive programming, regardless of 
+                        academic status, age, or professional background. Our inclusive approach welcomes:
+                    </p>
+
+                    <ul>
+                        <li>Current university students (undergraduate and graduate)</li>
+                        <li>University professors and academic staff</li>
+                        <li>Alumni from participating institutions</li>
+                        <li>Industry professionals</li>
+                        <li>Independent learners and enthusiasts</li>
+                    </ul>
+
+                    <div class="success-box">
+                        <div class="title">
+                            <i class="fas fa-heart"></i>
+                            Inclusive Philosophy
+                        </div>
+                        <p>
+                            We believe competitive programming skills transcend academic boundaries. 
+                            Our league celebrates diversity in background, experience, and perspective.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Node System -->
+                <section id="nodes" class="section">
+                    <h2><i class="fas fa-globe"></i> Node System</h2>
+
+                    <h3>Node Definition</h3>
+                    <p>
+                        A node represents a geographical or institutional hub that coordinates competitive programming 
+                        activities for a specific region or organization. Nodes serve as the organizational backbone 
+                        of std::ULeague.
+                    </p>
+
+                    <h3>Node Responsibilities</h3>
+                    <ul>
+                        <li><strong>Problem Contribution:</strong> Submit one high-quality problem per round when requested</li>
+                        <li><strong>Community Management:</strong> Organize local participants and teams</li>
+                        <li><strong>Quality Assurance:</strong> Review and test problem sets for the league, ensuring they meet quality standards</li>
+                        <li><strong>Local Events:</strong> Host viewing parties and training sessions (optional)</li>
+                    </ul>
+
+                    <h3>Node Requirements</h3>
+                    <ul>
+                        <li>Maximum 120 active participants per node</li>
+                        <li>Dedicated node coordinator</li>
+                        <li>Commitment to problem setting schedule</li>
+                        <li>Regular community engagement</li>
+                    </ul>
+
+                    <h3>Node Activity Status</h3>
+                    <p>
+                        A node is considered <strong>active</strong> if it submits the required problem when scheduled 
+                        according to the circular rotation system. Nodes that fail to submit their assigned problem 
+                        by the deadline are automatically <strong>suspended</strong> until their next scheduled 
+                        problem submission opportunity.
+                    </p>
+
+                    <h3>Circular Problem Setting System</h3>
+                    <p>
+                        std::ULeague operates on a circular node rotation system for problem setting. Every journey, 
+                        exactly 10 nodes are selected to contribute one problem each to create the 10-problem set. 
+                        Nodes are arranged in a circular list, ensuring fair distribution of problem-setting responsibilities.
+                    </p>
+
+                    <h4>System Benefits</h4>
+                    <ul>
+                        <li><strong>Scalable Workload:</strong> More nodes mean longer intervals between problem-setting duties</li>
+                        <li><strong>Reduced Burnout:</strong> Extended time between assignments allows thorough preparation</li>
+                        <li><strong>Fair Distribution:</strong> Circular rotation ensures equal responsibility sharing</li>
+                        <li><strong>Quality Assurance:</strong> Longer preparation time leads to higher quality problems</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <div class="title">
+                            <i class="fas fa-sync"></i>
+                            Rotation Example
+                        </div>
+                        <p>
+                            With 50 active nodes, each node contributes a problem every 5 journeys (5 weeks), 
+                            providing ample time for creative problem development and testing. If your node is arround 100 people,
+                            you can make, for example 10 teams of 10 people, and each team can make a problem. Therefore, each 
+                            team will have 50 weeks to prepare a problem. That is why std::ULeague is a sustainable league with 
+                            new problems every week. More nodes & people == less work to everyone.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="title">
+                            <i class="fas fa-network-wired"></i>
+                            Distributed Model
+                        </div>
+                        <p>
+                            By distributing problem creation across nodes, we ensure diverse perspectives, 
+                            sustainable workload, and continuous content generation.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Problem Setting -->
+                <section id="problems" class="section">
+                    <h2><i class="fas fa-puzzle-piece"></i> Problem Setting</h2>
+
+                    <h3>Problem Standards</h3>
+                    <p>
+                        All problems must meet rigorous quality standards to ensure fair competition and 
+                        educational value.
+                    </p>
+
+                    <h4>Technical Requirements</h4>
+                    <ul>
+                        <li><strong>Time Limits:</strong> 1-5 seconds on standard hardware (problems requiring 5 days to run are not acceptable)</li>
+                        <li><strong>Memory Limits:</strong> 64-512 MB depending on problem type</li>
+                        <li><strong>Test Cases:</strong> Minimum 20, maximum 100 test cases</li>
+                        <li><strong>Solution Verification:</strong> At least 3 independent solutions required</li>
+                    </ul>
+
+                    <h4>Content Guidelines</h4>
+                    <ul>
+                        <li>Clear, unambiguous problem statements</li>
+                        <li>Appropriate difficulty distribution (considering a node can have 120 people using AI tools for 5 days)</li>
+                        <li>Original problems or significant modifications</li>
+                        <li>Educational value and interesting insights</li>
+                    </ul>
+
+                    <h3>Review Process</h3>
+                    <ol>
+                        <li><strong>Submission:</strong> Node submits problem 1 week before contest, with everything prepared in the specified format</li>
+                        <li><strong>Integration:</strong> Problems are integrated into the contest platform (the submitting node has already tested it)</li>
+                        <li><strong>Post-Journey Review:</strong> Other nodes can test the problem and provide feedback. These nodes can file complaints for low-quality problems</li>
+                    </ol>
+
+                    <div class="warning-box">
+                        <div class="title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Quality Assurance
+                        </div>
+                        <p>
+                            Nodes that consistently submit low-quality problems may face review and 
+                            potential temporary suspension from problem-setting duties.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Scoring System -->
+                <section id="scoring" class="section">
+                    <h2><i class="fas fa-calculator"></i> Scoring System</h2>
+
+                    <p>
+                        Detailed scoring information is available on our dedicated 
+                        <a href="scoring.html" style="color: var(--primary-orange);">Scoring System page</a>. 
+                        Here's a summary of key principles:
+                    </p>
+
+                    <h3>Core Principles</h3>
+                    <ul>
+                        <li><strong>Merit-Based:</strong> Points awarded based on problem-solving performance</li>
+                        <li><strong>Time Sensitive:</strong> Earlier submissions receive higher scores</li>
+                        <li><strong>Quality Incentivized:</strong> Problem setters rewarded for well-balanced problems</li>
+                        <li><strong>Fair Competition:</strong> Transparent and consistent scoring across all participants</li>
+                    </ul>
+
+                    <h3>Ranking Categories</h3>
+                    <ul>
+                        <li><strong>Individual Rankings:</strong> Personal performance across all contests (when you submit a solution, acknowledge all others who helped you achieve the solution)</li>
+                        <li><strong>Node Rankings:</strong> Aggregate scores including setter bonuses</li>
+                    </ul>
+                </section>
+
+                <!-- Code of Conduct -->
+                <section id="conduct" class="section">
+                    <h2><i class="fas fa-handshake"></i> Code of Conduct</h2>
+
+                    <h3>Collaborative Competition</h3>
+                    <p>
+                        std::ULeague promotes a collaborative competitive environment that encourages learning 
+                        and knowledge sharing while maintaining fair play principles.
+                    </p>
+
+                    <h4>Allowed Collaboration</h4>
+                    <ul>
+                        <li><strong>Team Members:</strong> Full collaboration within registered teams</li>
+                        <li><strong>AI Tools:</strong> Allowed</li>
+                        <li><strong>Learning Resources:</strong> Online tutorials, documentation, forums</li>
+                        <li><strong>Discussion:</strong> Problem approach discussions (not solution sharing)</li>
+                    </ul>
+
+                    <h4>Prohibited Actions</h4>
+                    <ul>
+                        <li><strong>Cross-Node Sharing:</strong> Sharing complete solutions between different nodes during ongoing journeys</li>
+                        <li><strong>Identity Fraud:</strong> Misrepresenting team membership or affiliation</li>
+                        <li><strong>Platform Abuse:</strong> Attempting to compromise the competition platform</li>
+                        <li><strong>Automated Submission:</strong> Using bots or scripts for automatic submissions</li>
+                    </ul>
+
+                    <h3>Academic Integrity</h3>
+                    <ul>
+                        <li><strong>Understanding Required:</strong> Teams must understand their submitted solutions</li>
+                        <li><strong>Original Work:</strong> Solutions should represent the node's collective effort</li>
+                        <li><strong>Attribution:</strong> Credit sources for algorithms or techniques when appropriate</li>
+                        <li><strong>Learning Focus:</strong> Emphasis on understanding rather than just solving (AI, if used, is a tool, not the contestant)</li>
+                    </ul>
+
+                    <h3>Community Standards</h3>
+                    <ul>
+                        <li><strong>Respectful Communication:</strong> Professional conduct in all interactions</li>
+                        <li><strong>Constructive Feedback:</strong> Helpful criticism for problems and platform</li>
+                        <li><strong>Inclusive Environment:</strong> Welcoming to participants of all skill levels</li>
+                        <li><strong>Knowledge Sharing:</strong> Encouraging learning and growth in the community</li>
+                    </ul>
+
+                    <div class="success-box">
+                        <div class="title">
+                            <i class="fas fa-heart"></i>
+                            Learning Community
+                        </div>
+                        <p>
+                            We encourage helping others grow, 
+                            sharing knowledge, and creating an environment where everyone can improve their 
+                            competitive programming skills.
+                        </p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="title">
+                            <i class="fas fa-gavel"></i>
+                            Violations
+                        </div>
+                        <p>
+                            Violations that undermine the learning environment or competitive fairness may result 
+                            in warnings, temporary suspension, or permanent ban from std::ULeague activities.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Technical Requirements -->
+                <section id="technical" class="section">
+                    <h2><i class="fas fa-laptop-code"></i> Technical Requirements</h2>
+
+                    <h3>Supported Languages</h3>
+                    <div class="code-block">
+C++ (GCC 11.2.0)
+Java (OpenJDK 17)
+Python (3.10.x)
+C (GCC 11.2.0)
+Go (1.19.x)
+Rust (1.65.x)
+JavaScript (Node.js 18.x)
+Kotlin (1.7.x)
+                    </div>
+
+                    <h3>System Requirements</h3>
+                    <ul>
+                        <li><strong>Internet Connection:</strong> Stable broadband connection</li>
+                        <li><strong>Browser:</strong> Modern browser (Chrome, Firefox, Safari, Edge)</li>
+                        <li><strong>Hardware:</strong> Any computer capable of running a modern browser</li>
+                        <li><strong>IDE/Editor:</strong> Any programming environment of choice</li>
+                    </ul>
+
+                    <h3>Platform Features</h3>
+                    <ul>
+                        <li>Real-time leaderboards and submissions</li>
+                        <li>Comprehensive testing and feedback</li>
+                        <li>Problem statement downloads</li>
+                        <li>Solution archiving and review</li>
+                        <li>Team communication tools</li>
+                    </ul>
+                </section>
+
+                <!-- Disputes and Appeals -->
+                <section id="disputes" class="section">
+                    <h2><i class="fas fa-balance-scale"></i> Disputes & Appeals</h2>
+
+                    <h3>Problem Issues</h3>
+                    <p>
+                        If you encounter technical issues with a problem during a contest:
+                    </p>
+                    <ol>
+                        <li>Use the clarification system to ask questions</li>
+                        <li>Report technical issues immediately via the platform</li>
+                        <li>Continue working on other problems</li>
+                        <li>Contact administrators if critical issues persist</li>
+                    </ol>
+
+                    <h3>Scoring Disputes</h3>
+                    <p>
+                        Appeals regarding scoring must be submitted within 48 hours of contest conclusion:
+                    </p>
+                    <ul>
+                        <li>Provide detailed explanation of the dispute</li>
+                        <li>Include relevant submission details</li>
+                        <li>Submit through official channels only</li>
+                        <li>Await response from review committee</li>
+                    </ul>
+
+                    <h3>Resolution Process</h3>
+                    <ol>
+                        <li><strong>Initial Review:</strong> Technical validation by platform administrators</li>
+                        <li><strong>Committee Review:</strong> Review by panel of experienced participants</li>
+                        <li><strong>Final Decision:</strong> Binding decision issued within 7 days</li>
+                        <li><strong>Communication:</strong> Decision communicated to all affected parties</li>
+                    </ol>
+
+                    <div class="info-box">
+                        <div class="title">
+                            <i class="fas fa-shield-alt"></i>
+                            Fair Resolution
+                        </div>
+                        <p>
+                            All disputes are handled with transparency and fairness. 
+                            The league prioritizes educational value and community building over rigid rule enforcement.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Table of contents functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocLinks = document.querySelectorAll('.toc a');
+            const sections = document.querySelectorAll('.section');
+
+            // Smooth scrolling for TOC links
+            tocLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Highlight current section in TOC
+            function updateTOC() {
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        currentSection = section.id;
+                    }
+                });
+
+                tocLinks.forEach(link => {
+                    const href = link.getAttribute('href').substring(1);
+                    if (href === currentSection) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            // Update TOC on scroll
+            window.addEventListener('scroll', updateTOC);
+            updateTOC(); // Initial call
+
+            // Add smooth hover effects to content boxes
+            const contentBoxes = document.querySelectorAll('.info-box, .warning-box, .success-box');
+            contentBoxes.forEach(box => {
+                box.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+                });
+                
+                box.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

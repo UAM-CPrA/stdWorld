@@ -1,0 +1,107 @@
+{
+  "title": "Advanced Data Structures",
+  "description": "Specialized data structures for efficient problem solving in competitive programming.",
+  "type": "folder",
+  "parentPath": "concepts",
+  "items": [
+    {
+      "id": "segment-trees",
+      "title": "Segment Trees",
+      "type": "page",
+      "path": "concepts/data-structures/segment-trees.html",
+      "url": "concepts/data-structures/segment-trees.html",
+      "description": "Master segment trees for range queries and updates in logarithmic time complexity.",
+      "level": "Intermediate",
+      "readingTime": 30,
+      "tags": ["segment-tree", "range-queries", "tree"],
+      "featured": ["math", "interactive"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "Range Sum Queries",
+          "description": "Learn how to efficiently answer range sum queries with updates using segment trees.",
+          "mathematical_foundation": "Tree height: O(log n), Query/Update: O(log n)",
+          "applications": ["Range statistics", "Dynamic programming", "Computational geometry"]
+        },
+        {
+          "title": "Lazy Propagation",
+          "description": "Optimize segment trees with lazy propagation for range updates.",
+          "mathematical_foundation": "Deferred updates pushed down during traversal",
+          "applications": ["Range updates", "Mass operations", "Performance optimization"]
+        },
+        {
+          "title": "Variants and Extensions",
+          "description": "Explore segment tree variants for different operations like min/max, GCD, and more.",
+          "mathematical_foundation": "Associative operations with identity elements",
+          "applications": ["Range minimum queries", "Range GCD", "Custom operations"]
+        }
+      ]
+    },
+    {
+      "id": "union-find",
+      "title": "Union Find (DSU)",
+      "type": "page",
+      "path": "concepts/data-structures/union-find.html",
+      "url": "concepts/data-structures/union-find.html",
+      "description": "Disjoint Set Union for efficiently handling connectivity and equivalence queries.",
+      "level": "Intermediate",
+      "readingTime": 25,
+      "tags": ["dsu", "union-find", "connectivity"],
+      "featured": ["math", "code"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "Path Compression",
+          "description": "Optimize find operations by flattening the tree structure during queries.",
+          "mathematical_foundation": "Amortized O(α(n)) where α is inverse Ackermann function",
+          "applications": ["Query optimization", "Tree flattening", "Performance tuning"]
+        },
+        {
+          "title": "Union by Rank",
+          "description": "Merge trees efficiently by always attaching smaller tree to larger tree root.",
+          "mathematical_foundation": "Tree height remains O(log n) with union by rank",
+          "applications": ["Balanced merging", "Height optimization", "Efficiency improvement"]
+        },
+        {
+          "title": "Applications in Graphs",
+          "description": "Use DSU for detecting cycles, finding connected components, and MST algorithms.",
+          "mathematical_foundation": "Connected components, cycle detection in O(E⋅α(V))",
+          "applications": ["Kruskal's algorithm", "Dynamic connectivity", "Cycle detection"]
+        }
+      ]
+    },
+    {
+      "id": "fenwick-trees",
+      "title": "Fenwick Trees (BIT)",
+      "type": "page",
+      "path": "concepts/data-structures/fenwick-trees.html",
+      "url": "concepts/data-structures/fenwick-trees.html",
+      "description": "Binary Indexed Trees for efficient prefix sum queries and point updates.",
+      "level": "Intermediate",
+      "readingTime": 20,
+      "tags": ["bit", "fenwick", "prefix-sum"],
+      "featured": ["math", "code"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "Binary Indexing",
+          "description": "Understand the elegant binary representation that enables O(log n) operations.",
+          "mathematical_foundation": "LSB extraction: x & (-x) for tree navigation",
+          "applications": ["Prefix sums", "Frequency counting", "Order statistics"]
+        },
+        {
+          "title": "Range Updates",
+          "description": "Extend BIT to handle range updates using difference arrays and multiple trees.",
+          "mathematical_foundation": "Difference array: a[i] = sum[i] - sum[i-1]",
+          "applications": ["Range modifications", "Lazy updates", "Dynamic arrays"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-08-02",
+    "version": "2.0",
+    "totalItems": 3,
+    "structure": "hierarchical"
+  }
+}

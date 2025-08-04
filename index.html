@@ -1,325 +1,719 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Std::World</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- main.js will be loaded at the end of body for better performance -->
-    <style>
-      /* Association card hover animation */
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Std::World</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- main.js will be loaded at the end of body for better performance -->
+  <style>
+    /* Professional hover anim                  const continentSecti                      col.innerHTML = `
+                      <a href="${node.url}" target="_blank" style="text-decoration:none;">
+                        <div class="card h-100 text-center border-0 shadow-sm node-card" style="${bgColor}; cursor:pointer; border-radius: 16px; overflow: hidden;">
+                          <div class="card-body d-flex flex-column align-items-center justify-content-center" style="padding: 2rem;">
+                            <img src="${node.img}" alt="${node.name}" class="node-img">
+                            <h5 style="color:#FFD54F; font-weight: 600; margin-bottom: 1rem;">${node.name}</h5>
+                            <span style="color:#FFD54F; font-size:1.2rem; margin-top:0.5rem; font-weight: 500;">Visit Node Website ⮞</span>
+                          </div>
+                        </div>
+                      </a>
+                    `;nt.createElement('div');
+                  continentSection.className = 'continent-section mb-5';
+                  continentSection.innerHTML = `
+                  <div class="continent-header mb-4 text-center">
+                    <h3 style="color:#FFD54F; font-size:2.4rem; font-weight:600; margin-bottom:0.8rem;">
+                      ${continent}
+                    </h3>
+                    <p style="color:#ccc; font-size:1.2rem; font-weight:300;">${nodeCount} node${nodeCount !== 1 ? 's' : ''}</p>
+                  </div>
+                  <div class="row g-4 ${nodeCount + 1 < 4 ? 'justify-content-center' : ''}" id="continent-${continent.replace(/\s+/g, '')}">
+                  </div>
+                `;   .assoc-img {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+    }
+
+    .assoc-img:hover {
+      transform: scale(1.05);
+      z-index: 2;
+      box-shadow: 0 8px 24px 0 rgba(255, 213, 79, 0.3);
+    }
+
+    /* Professional card animations */
+    .node-card {
+      transition: all 0.3s ease;
+      will-change: transform;
+      border: 1px solid rgba(255, 213, 79, 0.2);
+    }
+
+    .node-card:hover {
+      transform: translateY(-8px);
+      z-index: 2;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 213, 79, 0.5);
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', monospace;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 50%, #34495e 100%);
+      color: #f8f9fa;
+      overflow: auto;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    /* Professional responsive layout */
+    .intro-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 40px 60px;
+      min-height: 85vh;
+      gap: 40px;
+      overflow: visible;
+    }
+
+    .intro-quote {
+      flex: 1;
+      max-width: 50%;
+      padding: 20px;
+    }
+
+    .intro-title {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: clamp(3.5rem, 8vw, 8rem);
+      color: #ffffff;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      line-height: 1.1;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .intro-subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+      font-weight: 300;
+      color: #e0e0e0;
+      display: block;
+      margin-top: 20px;
+      line-height: 1.4;
+    }
+
+    .intro-globe {
+      flex: 1;
+      max-width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      /* Align to the right */
+      overflow: visible;
+      /* Allow overflow to right margin */
+      position: relative;
+      right: -15%;
+      /* Reduced offset for better positioning */
+    }
+
+    #globe-canvas {
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      /* Prevent canvas scaling issues */
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: optimize-contrast;
+      /* Improve performance and prevent white screen */
+      will-change: auto;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      /* Make globe twice as large */
+      max-height: 160vh;
+      /* Double the previous size */
+      width: auto;
+      min-height: 800px;
+      /* Double the minimum size */
+    }
+
+    /* Hide scrollbar but allow scrolling */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar {
+      display: none;
+    }
+
+    body {
+      scrollbar-width: none;
+      /* Firefox */
+      -ms-overflow-style: none;
+      /* IE 10+ */
+      overflow-x: hidden;
+      /* Prevent horizontal scroll */
+    }
+
+    html {
+      overflow-x: hidden;
+      /* Prevent horizontal scroll on html element */
+    }
+
+    /* Professional card interactions */
+    .card.hover-grow {
+      transition: all 0.3s ease;
+      will-change: transform;
+      border: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card.hover-grow .card-arrow {
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      transform: translateX(-10px);
+    }
+
+    .card.hover-grow:hover {
+      transform: translateY(-8px);
+      z-index: 2;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card.hover-grow:hover .card-arrow {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    /* Professional spacing and layout improvements */
+    .row.g-4 {
+      margin-top: 2rem;
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Professional button styles */
+    .btn-professional {
+      background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%);
+      color: #1a1a1a;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 32px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-professional:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 213, 79, 0.3);
+      color: #1a1a1a;
+    }
+
+    /* Improved section spacing */
+    section {
+      margin: 4rem 0;
+    }
+
+    /* Professional text shadows */
+    .text-shadow-sm {
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-shadow-md {
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Professional focus states */
+    a:focus, button:focus {
+      outline: 2px solid #FFD54F;
+      outline-offset: 2px;
+    }
+    /* Professional mobile responsive styles */
+    @media (max-width: 768px) {
+      .intro-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 100px 20px 40px;
+        min-height: 90vh;
+      }
+
+      .intro-quote,
+      .intro-globe {
+        max-width: 100%;
+        flex: none;
+      }
+
+      .intro-quote {
+        order: 1;
+        margin-bottom: 30px;
+      }
+
+      .intro-globe {
+        order: 2;
+        max-width: 90%;
+        right: -10%;
+      }
+
+      #globe-canvas {
+        width: 100%;
+        max-width: 1000px;
+        max-height: 1000px;
+        min-height: 600px;
+        object-fit: contain;
+      }
+
+      .container {
+        width: 95%;
+        padding: 0 15px;
+      }
+
+      .who-section {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        padding: 3rem 2rem;
+      }
+
+      .card .card-text {
+        font-size: 1.2rem !important;
+      }
+
+      .node-card img {
+        width: 200px !important;
+      }
+    }
+
+    /* Professional responsive images */
+    .node-img {
+      width: 280px;
+      object-fit: contain;
+      margin-bottom: 1.5rem;
+      max-width: 100%;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    }
+
+    .add-node-img {
+      width: 160px;
+      padding-top: 5%;
+      object-fit: contain;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+      max-width: 100%;
+      height: auto;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    @media (max-width: 576px) {
+      .intro-section {
+        padding: 70px 10px 15px;
+      }
+
+      .who-section {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        padding: 1.5rem 1rem;
+      }
+
+      .who-section h2 {
+        font-size: 2rem !important;
+      }
+
+      .who-section p {
+        font-size: 1.1rem !important;
+      }
+
+      .card .card-title {
+        font-size: 1.5rem !important;
+      }
+
+      .card .card-text {
+        font-size: 1rem !important;
+      }
+
+      .node-img {
+        width: 150px !important;
+      }
+
+      .add-node-img {
+        width: 120px !important;
+      }
+
+      #globe-canvas {
+        max-width: 800px !important;
+        /* Double the size */
+        max-height: 800px !important;
+        /* Double the size */
+        min-height: 560px !important;
+        /* Double the size */
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      #globe-canvas {
+        max-width: 700px !important;
+        /* Double the size */
+        max-height: 700px !important;
+        /* Double the size */
+        min-height: 500px !important;
+        /* Double the size */
+      }
+
+      .intro-globe {
+        max-width: 95%;
+        right: -5%;
+        /* Minimal offset for mobile */
+      }
+    }
+
+    /* Popup responsive styles */
+    @media (max-width: 768px) {
+      .popup-content {
+        padding: 1.5rem !important;
+        margin: 10px !important;
+        border-radius: 15px !important;
+      }
+
+      #popupContent img {
+        width: 80px !important;
+        margin-bottom: 0.8rem !important;
+      }
+
+      #popupContent h3 {
+        font-size: 1.5rem !important;
+      }
+
+      #popupContent p {
+        font-size: 0.95rem !important;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .popup-content {
+        padding: 1rem !important;
+        margin: 5px !important;
+      }
+
+      #popupContent img {
+        width: 60px !important;
+      }
+
+      #popupContent h3 {
+        font-size: 1.3rem !important;
+      }
+
+      #popupContent h5 {
+        font-size: 1.1rem !important;
+      }
+
       .assoc-img {
-        transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s;
-        will-change: transform;
+        width: 60px !important;
+        height: 60px !important;
       }
-      .assoc-img:hover {
-        transform: scale(1.08);
-        z-index: 2;
-        box-shadow: 0 4px 16px 0 rgba(255,213,79,0.25);
-      }
-      /* Animation for std::Nodes cards */
-      .node-card {
-        transition: transform 0.2s cubic-bezier(.4,2,.6,1), box-shadow 0.2s;
-        will-change: transform;
-      }
-      .node-card:hover {
-        transform: scale(1.06);
-        z-index: 2;
-        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25);
-      }
-        html {
-            font-size: 16px;
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', monospace;
-            background: linear-gradient(135deg, #2e7f5f 0%, #074055 60%);
-            color: #222;
-            overflow: auto;
-        }
-        .container {
-            max-width: 1600px;
-            width: 90%;
-        }
-        /* Hide scrollbar but allow scrolling */
-        body::-webkit-scrollbar, html::-webkit-scrollbar {
-            display: none;
-        }
-        body {
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE 10+ */
-        }
-      .card.hover-grow {
-        transition: transform 0.2s cubic-bezier(.4,2,.6,1), box-shadow 0.2s;
-        will-change: transform;
-      }
-      .card.hover-grow .card-arrow {
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s;
-      }
-      .card.hover-grow:hover {
-        transform: scale(1.06);
-        z-index: 2;
-        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25);
-      }
-      .card.hover-grow:hover .card-arrow {
-        opacity: 1;
-        pointer-events: auto;
-      }
-    </style>
+    }
+  </style>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="font-family: 'Consolas', monospace; z-index: 1030;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="font-weight: bold;">
-                <span style="color:#FFD54F;">std::</span>World
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top"
+    style="font-family: 'Consolas', monospace; z-index: 1030; background: rgba(26, 26, 26, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 213, 79, 0.2);">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#" style="font-weight: bold; font-size: 1.4rem;">
+        <span style="color:#FFD54F;">std::</span>World
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTree"
+        aria-controls="navbarTree" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTree">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="learnDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false" style="transition: color 0.3s ease;">
+              Resources
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTree" aria-controls="navbarTree" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTree">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#who">Log_in</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#who">Register</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="learnDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Resources
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="learnDropdown">
-                            <li><a class="dropdown-item" href="https://uleague.std.world" target="_blank">std::ULeague</a></li>
-                            <li><a class="dropdown-item" href="#">std::Learn</a></li>
-                            <li><a class="dropdown-item" href="#">std::Connect</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#nodesCarousel">Nodes</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-</nav>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="learnDropdown" style="background: rgba(26, 26, 26, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 213, 79, 0.2);">
+              <li><a class="dropdown-item" href="uleague/index.html" target="_blank" style="transition: background-color 0.3s ease;">std::ULeague</a></li>
+              <li><a class="dropdown-item" href="stdLearn/index.html" style="transition: background-color 0.3s ease;">std::Learn</a></li>
+              <li><a class="dropdown-item" href="uleague/register.html" style="transition: background-color 0.3s ease;">std::Connect</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#nodes" style="transition: color 0.3s ease;">std::Nodes</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <section class="intro-section">
-        <div class="intro-quote" style="margin:0; padding:0; border:0; ">
-            <p style="margin:0; padding-left:0%; padding-top: 10%; border:0; font-size:7rem; color:#fff; text-shadow:0 2px 8px #000;">
-            <span style="color:#FFD54F;">std::</span>World <br>
-                <span style="font-size:1.5rem; font-weight:normal; color:#ccc;">
-The international network for competitive programming.</span>
-        </div>
-        <div class="intro-globe" style="margin:0; padding:0; border:0;">
-            <canvas id="globe-canvas" width="1000" height="1000" style="position:relative; left:40%;"></canvas>
-        </div>
-    </section>
+  <section class="intro-section">
+    <div class="intro-quote" style="margin:0; padding:0; border:0; ">
+      <p class="intro-title">
+        <span style="color:#FFD54F;">std::</span>World <br>
+        <span class="intro-subtitle">
+          The international network for competitive programming.</span>
+    </div>
+    <div class="intro-globe" style="margin:0; padding:0; border:0;">
+      <canvas id="globe-canvas" width="1000" height="1000"></canvas>
+    </div>
+  </section>
 
-    <!-- TODO: Make video -->
-    <!-- <section class="video-section">
+  <!-- TODO: Make video -->
+  <!-- <section class="video-section">
         <video controls poster="" width="800" height="450">
             <source src="" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </section> -->
 
-<section class="who-section py-5" style="font-family: 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', monospace; color:#fff; text-shadow:0 2px 8px #000;">
-  <div class="container">
-    <h2 class="mb-4" style="font-size:2.5rem; font-weight:bold; color:#FFD54F; text-shadow:0 2px 8px #000;">Who are we?</h2>
-    <p class="mb-5" style="font-size:1.3rem; font-weight:normal; color:#fff; text-shadow:0 1px 4px #222;">
-    std::World is an international (non profit) association that unifies university associations
-    dedicated to competitive programming arround the world and be connected with the best of the world.
-    <br><br>
-    We bring together students, educators, and enthusiasts from across the globe to create a vibrant
-    community where knowledge, opportunities, and experiences are shared openly. Through our network,
-    members can access curated learning materials, participate in global competitions, and connect
-    with like-minded peers and mentors.
-    <br><br>
-    Whether you are just starting out or are a seasoned competitor, std::World provides the platform
-    and support to help you grow, challenge yourself, and make a meaningful impact in the world of
-    competitive programming.
-    </p>
+  <section class="who-section py-5"
+    style="font-family: 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', monospace; color:#f8f9fa; background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px);">
+    <div class="container">
+      <h2 class="mb-5 text-center" style="font-size:2.8rem; font-weight:600; color:#FFD54F; text-shadow:0 4px 12px rgba(0, 0, 0, 0.3);">Who are
+        we?</h2>
+      <p class="mb-5 text-center" style="font-size:1.4rem; font-weight:300; color:#e0e0e0; max-width: 900px; margin: 0 auto 3rem; line-height: 1.7;">
+        std::World is an international (non profit) association that unifies university associations
+        dedicated to competitive programming around the world and be connected with the best of the world.
+        <br><br>
+        We bring together students, educators, and enthusiasts from across the globe to create a vibrant
+        community where knowledge, opportunities, and experiences are shared openly. Through our network,
+        members can access curated learning materials, participate in global competitions, and connect
+        with like-minded peers and mentors.
+        <br><br>
+        Whether you are just starting out or are a seasoned competitor, std::World provides the platform
+        and support to help you grow, challenge yourself, and make a meaningful impact in the world of
+        competitive programming.
+      </p>
 
-    <div class="row text-center g-4">
+      <div class="row text-center g-4">
 
-    <!-- std::Learn card -->
-
-    <div class="col-md-4">
-      <div class="card text-white h-100 hover-grow" style="background: linear-gradient(90deg, #FFD54F, #FFB300);">
-        <div class="card-body">
-        <h5 class="card-title" style="font-size:2rem; color:inherit;">
-             <span style="color:#000 !important; background:transparent !important;">std::</span>Learn
-        </h5>
-        <p class="card-text" style="font-size:1.25rem;">
-          Dive deep into competitive programming with structured learning and resources curated by top competitors.
-        </p>
-        <a href="https://uleague.std.world" target="_blank" class="card-arrow" style="display:inline-block; font-size:4rem; color:#fff; text-decoration:none; font-weight:bold; transition:color 0.2s;">
-            ⮞
-        </a>
+        <!-- std::Learn card -->
+        <div class="col-md-4">
+          <div class="card text-white h-100 hover-grow" style="background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%); border-radius: 16px;">
+            <div class="card-body" style="padding: 2.5rem;">
+              <h5 class="card-title" style="font-size:2.2rem; color:inherit; margin-bottom: 1.5rem;">
+                <span style="color:#1a1a1a !important; background:transparent !important; font-weight: 600;">std::</span>Learn
+              </h5>
+              <p class="card-text" style="font-size:1.3rem; line-height: 1.5; color:#1a1a1a;">
+                Dive deep into competitive programming with structured learning and resources curated by top
+                competitors.
+              </p>
+              <a href="stdLearn/index.html" class="card-arrow"
+                style="display:inline-block; font-size:3.5rem; color:#1a1a1a; text-decoration:none; font-weight:bold; transition: all 0.3s ease;">
+                ⮞
+              </a>
+            </div>
+          </div>
         </div>
+
+        <!-- std::ULeague card -->
+        <div class="col-md-4">
+          <div class="card text-white h-100 hover-grow" style="background: linear-gradient(135deg, #FF7B24 0%, #d39522 100%); border-radius: 16px;">
+            <div class="card-body" style="padding: 2.5rem;">
+              <h5 class="card-title" style="font-size:2.2rem; color:inherit; margin-bottom: 1.5rem;">
+                <span style="color:#1a1a1a !important; background:transparent !important; font-weight: 600;">std::</span>ULeague
+              </h5>
+              <p class="card-text" style="font-size:1.3rem; line-height: 1.5; color:#1a1a1a;">
+                Compete in the inter-university league and challenge yourself against other std::Nodes from around the
+                world.
+              </p>
+              <a href="uleague/index.html" target="_blank" class="card-arrow"
+                style="display:inline-block; font-size:3.5rem; color:#1a1a1a; text-decoration:none; font-weight:bold; transition: all 0.3s ease;">
+                ⮞
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- std::Connect card -->
+        <div class="col-md-4">
+          <div class="card text-white h-100 hover-grow" style="background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%); border-radius: 16px;">
+            <div class="card-body" style="padding: 2.5rem;">
+              <h5 class="card-title" style="font-size:2.2rem; color:inherit; margin-bottom: 1.5rem;">
+                <span style="color:#1a1a1a !important; background:transparent !important; font-weight: 600;">std::</span>Connect
+              </h5>
+              <p class="card-text" style="font-size:1.3rem; line-height: 1.5; color:#1a1a1a;">
+                Connect with a global community of competitive programmers and build your network of problem solvers.
+              </p>
+              <br>
+              <a href="uleague/register.html" target="_blank" class="card-arrow"
+                style="display:inline-block; font-size:3.5rem; color:#1a1a1a; text-decoration:none; font-weight:bold; transition: all 0.3s ease;">
+                ⮞
+              </a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
+  </section>
 
-    <!-- std::ULeague card -->
-    <div class="col-md-4">
-      <div class="card text-white h-100 hover-grow" style="background: linear-gradient(90deg, #FF7B24, #d39522);">
-        <div class="card-body">
-        <h5 class="card-title" style="font-size:2rem; color:inherit;">
-            <span style="color:#000 !important; background:transparent !important;">std::</span>ULeague
-        </h5>
-        <p class="card-text" style="font-size:1.25rem;">
-          Compete in the inter-university league and challenge yourself against other std::Nodes from around the world.
-        </p>
-        <a href="https://uleague.std.world" target="_blank" class="card-arrow" style="display:inline-block; font-size:4rem; color:#fff; text-decoration:none; font-weight:bold; transition:color 0.2s;">
-            ⮞
-        </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- std::Connect card -->
-    <div class="col-md-4">
-      <div class="card text-white h-100 hover-grow" style="background: linear-gradient(90deg, #4CAF50, #388E3C);">
-        <div class="card-body">
-        <h5 class="card-title" style="font-size:2rem; color:inherit;">
-            <span style="color:#000 !important; background:transparent !important;">std::</span>Connect
-        </h5>
-        <p class="card-text" style="font-size:1.25rem;">
-          Connect with a global community of competitive programmers and build your network of problem solvers.
-        </p>
-        <br>
-        <a href="https://uleague.std.world" target="_blank" class="card-arrow" style="display:inline-block; font-size:4rem; color:#fff; text-decoration:none; font-weight:bold; transition:color 0.2s;">
-            ⮞
-        </a>
-        </div>
-      </div>
-    </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- std::Nodes Section -->
-<section class="nodes-section py-5 color: #fff;">
-  <div class="container">
-    <h2 class="mb-4 text-center" style="font-size:2.5rem; font-weight:bold; color:#FFD54F;">Find your std::Node</h2>
-    <p class="mb-5 text-center" style="font-size:1.3rem; color:#fff;">
-        Our association is based on nodes, which are groups of universities associations of a specific city that promotes competitive programming 
-        to all kind of students. 
+  <!-- std::Nodes Section -->
+  <section id="nodes" class="nodes-section py-5" style="background: rgba(0, 0, 0, 0.05); backdrop-filter: blur(5px);">
+    <div class="container">
+      <h2 class="mb-5 text-center" style="font-size:2.8rem; font-weight:600; color:#FFD54F;">Find your std::Node</h2>
+      <p class="mb-5 text-center" style="font-size:1.4rem; color:#e0e0e0; max-width: 800px; margin: 0 auto 3rem; line-height: 1.6;">
+        Our association is based on nodes, which are groups of universities associations of a specific city that
+        promotes competitive programming
+        to all kind of students.
         <br><br>
         Find your std::Node or create your own!
-    </p>
-    <div id="nodesGrid" class="row g-4">
-      <!-- Node cards will be injected by JS -->
-    </div>
-    <script>
-      // Dynamically load node info from nodes.json and render grid
-      document.addEventListener('DOMContentLoaded', function() {
-        fetch('nodes.json')
-          .then(response => response.json())
-          .then(nodeInfo => {
-            const nodesGrid = document.getElementById('nodesGrid');
-            const nodeIds = Object.keys(nodeInfo);
-            if (nodeIds.length < 4) {
-              nodesGrid.classList.add('justify-content-center');
-            } else {
-              nodesGrid.classList.remove('justify-content-center');
-            }
-            nodeIds.forEach((id, i) => {
-              const node = nodeInfo[id];
-              const col = document.createElement('div');
-              col.className = 'col-12 col-sm-6 col-md-3'; // 4 columns per row
-              // Alternate background: even = white, odd = gold
-              const bgColor = i % 2 === 0 ? 'background: linear-gradient(135deg, #fff 80%, #FFD54F 100%); color:#222;' : 'background: linear-gradient(135deg, #FFD54F 80%, #fff 100%); color:#222;';
-              if (node.url) {
-                // Visually distinct card for direct link nodes
-                col.innerHTML = `
-                  <a href="${node.url}" target="_blank" style="text-decoration:none;">
-                    <div class="card h-100 text-center border-0 shadow-sm node-card" style="${bgColor}; cursor:pointer; border: 2px solid #FFD54F;">
-                      <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                        <img src="${node.img}" alt="${node.name}" style="width:300px; object-fit:contain; margin-bottom:1rem;">
-                        <h5 style="color:#FFD54F;">${node.name}</h5>
-                        <span style="color:#FFD54F; font-size:1.1rem; margin-top:0.5rem;">Visit Node Website ⮞</span>
+      </p>
+
+      <!-- Continent Sections will be injected by JS -->
+      <div id="continentSections">
+        <!-- Each continent will have its own section -->
+      </div>
+
+      <script>
+        // Dynamically load node info from nodes.json and render by continent sections
+        document.addEventListener('DOMContentLoaded', function () {
+          fetch('nodes.json')
+            .then(response => response.json())
+            .then(continentData => {
+              const continentSections = document.getElementById('continentSections');
+
+              // Define continent order and include Oceania
+              const continentOrder = ['Europe', 'Asia', 'North America', 'South America', 'Africa', 'Oceania'];
+
+              continentOrder.forEach(continent => {
+                const nodes = continentData[continent] || {};
+                const nodeCount = Object.keys(nodes).length;
+
+                // Create continent section (even if empty for Oceania)
+                const continentSection = document.createElement('div');
+                continentSection.className = 'continent-section mb-5';
+                continentSection.innerHTML = `
+                <div class="continent-header mb-4 text-center">
+                  <h3 style="color:#FFD54F; font-size:2.2rem; font-weight:bold; margin-bottom:0.5rem;">
+                    ${continent}
+                  </h3>
+                  <p style="color:#ccc; font-size:1.1rem;">${nodeCount} node${nodeCount !== 1 ? 's' : ''}</p>
+                </div>
+                <div class="row g-4 ${nodeCount + 1 < 4 ? 'justify-content-center' : ''}" id="continent-${continent.replace(/\s+/g, '')}">
+                </div>
+              `;
+                continentSections.appendChild(continentSection);
+
+                // Get the grid for this continent
+                const continentGrid = document.getElementById(`continent-${continent.replace(/\s+/g, '')}`);
+
+                // Add existing nodes for this continent
+                Object.keys(nodes).forEach((nodeId, i) => {
+                  const node = nodes[nodeId];
+                  const col = document.createElement('div');
+                  col.className = 'col-12 col-sm-6 col-lg-3';
+
+                    // Alternate background: even = white, odd = gold
+                    const bgColor = i % 2 === 0 ?
+                      'background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); color:#1a1a1a; border: 1px solid rgba(255, 213, 79, 0.3);' :
+                      'background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%); color:#1a1a1a; border: 1px solid rgba(255, 213, 79, 0.5);';                  if (node.url) {
+                    // Visually distinct card for direct link nodes
+                    col.innerHTML = `
+                    <a href="${node.url}" target="_blank" style="text-decoration:none;">
+                      <div class="card h-100 text-center border-0 shadow-sm node-card" style="${bgColor}; cursor:pointer; border: 2px solid #FFD54F;">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                          <img src="${node.img}" alt="${node.name}" class="node-img">
+                          <h5 style="color:#FFD54F;">${node.name}</h5>
+                          <span style="color:#FFD54F; font-size:1.1rem; margin-top:0.5rem;">Visit Node Website ⮞</span>
+                        </div>
+                      </div>
+                    </a>
+                  `;
+                  } else {
+                    col.innerHTML = `
+                    <div class="card h-100 text-center border-0 shadow-sm node-card" style="${bgColor}; cursor:pointer; border-radius: 16px; overflow: hidden;" data-node-id="${nodeId}" data-continent="${continent}">
+                      <div class="card-body d-flex flex-column align-items-center justify-content-center" style="padding: 2rem;">
+                        <img src="${node.img}" alt="${node.name}" class="node-img">
+                        <h5 style="font-weight: 600;">${node.name}</h5>
                       </div>
                     </div>
-                  </a>
-                `;
-              } else {
-                col.innerHTML = `
-                  <div class="card h-100 text-center border-0 shadow-sm node-card" style="${bgColor}; cursor:pointer;" data-node-id="${id}">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                      <img src="${node.img}" alt="${node.name}" style="width:300px; object-fit:contain; margin-bottom:1rem;">
-                      <h5>${node.name}</h5>
-                    </div>
-                  </div>
-                `;
-              }
-              nodesGrid.appendChild(col);
-            });
-            // Always add the 'create your own node' card at the end
-            const addCol = document.createElement('div');
-            addCol.className = 'col-12 col-sm-6 col-md-3';
-            addCol.innerHTML = `
-              <div class="card h-100 text-center border-0 shadow-sm node-card" style="background: linear-gradient(135deg, #FFD54F 80%, #fff 100%); color:#222; cursor:pointer; border: 2px dashed #FFD54F;">
-                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                  <img src="stdNodes/add.png" alt="Create Node" style="width:180px; padding-top: 10%; object-fit:contain; margin-bottom:1rem; opacity:0.7;">
-                  <span style="font-size:1.1rem; margin-top:0.5rem;">Add your city or university ⮞</span>
-                </div>
-              </div>
-            `;
-            nodesGrid.appendChild(addCol);
+                  `;
+                  }
+                  continentGrid.appendChild(col);
+                });
 
-            // Popup logic
-            document.body.insertAdjacentHTML('beforeend', `
-              <div id="nodePopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
-                <div style="background:#111; color:#fff; border-radius:20px; max-width:900px; min-width:350px; margin:auto; padding:2.5rem; box-shadow:0 8px 32px rgba(0,0,0,0.25); position:relative;">
-                  <span id="closePopup" style="position:absolute; top:10px; right:20px; font-size:2rem; cursor:pointer; color:#FFD54F;">&times;</span>
+                // Always add the 'create your own node' card for each continent
+                const addCol = document.createElement('div');
+                addCol.className = 'col-12 col-sm-6 col-lg-3';
+                addCol.innerHTML = `
+                <div class="card h-100 text-center border-0 shadow-sm node-card" style="background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%); color:#1a1a1a; cursor:pointer; border: 2px dashed rgba(255, 213, 79, 0.7); border-radius: 16px; overflow: hidden;">
+                  <div class="card-body d-flex flex-column align-items-center justify-content-center" style="padding: 2rem;">
+                    <img src="stdNodes/add.png" alt="Create Node" class="add-node-img">
+                    <span style="font-size:1.2rem; margin-top:0.8rem; font-weight: 600;">Add your city or university ⮞</span>
+                    <small style="color:#1a1a1a; margin-top:0.5rem; opacity: 0.8;">${continent}</small>
+                  </div>
+                </div>
+              `;
+                continentGrid.appendChild(addCol);
+              });
+
+              // Popup logic
+              document.body.insertAdjacentHTML('beforeend', `
+              <div id="nodePopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; backdrop-filter: blur(8px);">
+                <div class="popup-content" style="background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%); color:#f8f9fa; border-radius:24px; max-width:950px; width:100%; max-height:90vh; overflow-y:auto; margin:auto; padding:3rem; box-shadow:0 20px 60px rgba(0,0,0,0.4); position:relative; border: 1px solid rgba(255, 213, 79, 0.3);">
+                  <span id="closePopup" style="position:absolute; top:20px; right:30px; font-size:2.5rem; cursor:pointer; color:#FFD54F; z-index:1; transition: color 0.3s ease;">&times;</span>
                   <div id="popupContent"></div>
                 </div>
               </div>
             `);
-            const popup = document.getElementById('nodePopup');
-            const popupContent = document.getElementById('popupContent');
-            document.getElementById('closePopup').onclick = () => popup.style.display = 'none';
+              const popup = document.getElementById('nodePopup');
+              const popupContent = document.getElementById('popupContent');
+              document.getElementById('closePopup').onclick = () => popup.style.display = 'none';
 
-            document.querySelectorAll('.node-card').forEach(card => {
-              card.onclick = function() {
-                const nodeId = card.getAttribute('data-node-id');
-                const info = nodeInfo[nodeId];
-                popupContent.innerHTML = `
-                  <img src="${info.img}" alt="${info.name}" style="width:120px; margin-bottom:1rem;">
-                  <h3 style="color:#FFD54F;">${info.name}</h3>
-                  <p style="color:#fff;">${info.desc}</p>
-                  <h5 style="color:#FFD54F;">Associations/Universities:</h5>
-                  <div class="container-fluid">
-                    <div class="row g-3 ${info.associations.length < 4 ? 'justify-content-center' : ''}">
-                      ${info.associations.map(a => `
-                        <div class="col-6 col-md-3 d-flex flex-column align-items-center justify-content-start" style="height:140px;">
-                          <a href="${a.url}" target="_blank" style="text-decoration:none; width:100%; display:flex; flex-direction:column; align-items:center; height:100%;">
-                            <div style="height:80px; width:80px; display:flex; align-items:flex-start; justify-content:center;">
-                              <img class="assoc-img" src="${a.img}" alt="${a.name}" style="width:80px; height:80px; object-fit:contain; border-radius:12px; background:#222; margin-bottom:0.5rem; display:block;">
-                            </div>
-                            <span style="color:#fff; font-size:0.95rem; text-align:center; display:block; margin-top:0.2rem; width:100%;">${a.name}</span>
-                          </a>
-                        </div>
-                      `).join('')}
+              document.querySelectorAll('.node-card').forEach(card => {
+                card.onclick = function () {
+                  const nodeId = card.getAttribute('data-node-id');
+                  const continent = card.getAttribute('data-continent');
+                  if (nodeId && continent) {
+                    const info = continentData[continent][nodeId];
+                    popupContent.innerHTML = `
+                    <img src="${info.img}" alt="${info.name}" style="width:140px; margin-bottom:1.5rem; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));">
+                    <h3 style="color:#FFD54F; font-weight: 600; font-size: 2.2rem;">${info.name}</h3>
+                    <p style="color:#ccc; font-size:1.2rem; margin-bottom:1rem; font-weight: 300;">${continent}</p>
+                    <p style="color:#e0e0e0; font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">${info.desc}</p>
+                    <h5 style="color:#FFD54F; font-weight: 600; font-size: 1.5rem; margin-bottom: 1.5rem;">Associations/Universities:</h5>
+                    <div class="container-fluid">
+                      <div class="row g-4 ${info.associations.length < 4 ? 'justify-content-center' : ''}">
+                        ${info.associations.map(a => `
+                          <div class="col-6 col-md-3 d-flex flex-column align-items-center justify-content-start" style="height:160px;">
+                            <a href="${a.url}" target="_blank" style="text-decoration:none; width:100%; display:flex; flex-direction:column; align-items:center; height:100%; transition: all 0.3s ease;">
+                              <div style="height:90px; width:90px; display:flex; align-items:flex-start; justify-content:center; margin-bottom: 0.8rem;">
+                                <img class="assoc-img" src="${a.img}" alt="${a.name}" style="width:90px; height:90px; object-fit:contain; border-radius:16px; background: rgba(255, 255, 255, 0.1); margin-bottom:0.5rem; display:block; border: 1px solid rgba(255, 213, 79, 0.2);">
+                              </div>
+                              <span style="color:#f8f9fa; font-size:1rem; text-align:center; display:block; margin-top:0.3rem; width:100%; word-wrap:break-word; font-weight: 500;">${a.name}</span>
+                            </a>
+                          </div>
+                        `).join('')}
+                      </div>
                     </div>
-                  </div>
-                `;
-                popup.style.display = 'flex';
-              };
+                  `;
+                    popup.style.display = 'flex';
+                  }
+                };
+              });
             });
-          });
-      });
-    </script>
-  </div>
+        });
+      </script>
+    </div>
 
 
 
@@ -327,6 +721,7 @@ The international network for competitive programming.</span>
     <script src="dijkstra.js"></script>
     <script src="main.js"></script>
     <!-- Bootstrap JS Bundle (with Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

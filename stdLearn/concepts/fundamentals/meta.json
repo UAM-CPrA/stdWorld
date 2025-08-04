@@ -1,0 +1,119 @@
+{
+  "title": "Programming Fundamentals",
+  "description": "Core principles of competitive programming and problem-solving techniques.",
+  "type": "folder",
+  "parentPath": "concepts",
+  "items": [
+    {
+      "id": "complexity-analysis",
+      "title": "Time & Space Complexity",
+      "type": "page",
+      "path": "concepts/fundamentals/complexity-analysis.html",
+      "url": "concepts/fundamentals/complexity-analysis.html",
+      "description": "Master algorithmic complexity analysis - the foundation of competitive programming optimization.",
+      "level": "Beginner",
+      "readingTime": 15,
+      "tags": ["complexity", "big-o", "analysis"],
+      "featured": ["math", "interactive"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "Big O Notation",
+          "description": "Learn how to analyze algorithm efficiency using asymptotic notation for time and space complexity.",
+          "mathematical_foundation": "f(n) = O(g(n)) if ∃c,n₀: f(n) ≤ c·g(n) ∀n ≥ n₀",
+          "applications": ["Algorithm comparison", "Performance analysis", "Resource estimation"]
+        },
+        {
+          "title": "Common Complexities",
+          "description": "Understand the complexity hierarchy from O(1) to O(n!) and their practical implications.",
+          "mathematical_foundation": "O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)",
+          "applications": ["Algorithm selection", "Time limit estimation", "Optimization decisions"]
+        },
+        {
+          "title": "Space Complexity",
+          "description": "Analyze memory usage patterns and optimize space consumption in algorithms.",
+          "mathematical_foundation": "Space = auxiliary space + input space",
+          "applications": ["Memory optimization", "Stack overflow prevention", "Cache efficiency"]
+        },
+        {
+          "title": "Amortized Analysis",
+          "description": "Learn advanced techniques for analyzing algorithms with varying costs per operation.",
+          "mathematical_foundation": "Average cost over sequence of operations",
+          "applications": ["Dynamic arrays", "Hash tables", "Union-find operations"]
+        }
+      ]
+    },
+    {
+      "id": "basic-data-structures",
+      "title": "Basic Data Structures", 
+      "type": "page",
+      "path": "concepts/fundamentals/basic-data-structures.html",
+      "url": "concepts/fundamentals/basic-data-structures.html",
+      "description": "Master essential data structures that form the building blocks of competitive programming solutions.",
+      "level": "Beginner",
+      "readingTime": 20,
+      "tags": ["arrays", "vectors", "maps", "sets"],
+      "featured": ["code", "interactive"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "Arrays and Vectors",
+          "description": "Learn efficient usage of arrays and dynamic arrays for storing and manipulating data.",
+          "mathematical_foundation": "Random access: O(1), insertion/deletion at end: O(1) amortized",
+          "applications": ["Data storage", "Algorithm implementation", "Memory optimization"]
+        },
+        {
+          "title": "Sets and Maps",
+          "description": "Master associative containers for fast lookups, insertions, and deletions.",
+          "mathematical_foundation": "Balanced BST operations: O(log n) for search, insert, delete",
+          "applications": ["Uniqueness checking", "Frequency counting", "Range queries"]
+        },
+        {
+          "title": "Stacks and Queues",
+          "description": "Understand LIFO and FIFO data structures for specialized problem-solving patterns.",
+          "mathematical_foundation": "LIFO: Last In, First Out; FIFO: First In, First Out",
+          "applications": ["Expression evaluation", "BFS traversal", "Recursion simulation"]
+        }
+      ]
+    },
+    {
+      "id": "sorting-searching",
+      "title": "Sorting & Searching",
+      "type": "page", 
+      "path": "concepts/fundamentals/sorting-searching.html",
+      "url": "concepts/fundamentals/sorting-searching.html",
+      "description": "Essential sorting algorithms and binary search techniques with practical applications.",
+      "level": "Beginner",
+      "readingTime": 18,
+      "tags": ["sorting", "binary-search", "algorithms"],
+      "featured": ["code", "examples"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "Comparison-based Sorting",
+          "description": "Study efficient sorting algorithms like merge sort and quicksort with their trade-offs.",
+          "mathematical_foundation": "Lower bound: Ω(n log n) comparisons for comparison-based sorting",
+          "applications": ["Data preprocessing", "Order statistics", "Algorithm optimization"]
+        },
+        {
+          "title": "Binary Search",
+          "description": "Master the fundamental technique for searching in sorted arrays and its variants.",
+          "mathematical_foundation": "Divide search space in half: T(n) = T(n/2) + O(1) = O(log n)",
+          "applications": ["Search problems", "Optimization", "Range finding"]
+        },
+        {
+          "title": "Non-comparison Sorting",
+          "description": "Explore specialized sorting algorithms like counting sort and radix sort.",
+          "mathematical_foundation": "Linear time: O(n + k) where k is range of input",
+          "applications": ["Integer sorting", "String sorting", "Special constraints"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-08-02",
+    "version": "2.0",
+    "totalItems": 3,
+    "structure": "hierarchical"
+  }
+}

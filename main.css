@@ -2,8 +2,12 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', monospace;
-background: linear-gradient(135deg, #2e7f5f 0%, #074055 60%);    color: #222;
+    background: linear-gradient(135deg, #2e7f5f 0%, #074055 60%);
+    color: #222;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
+
+/* Remove conflicting styles and update for responsiveness */
 .main-nav {
     display: flex;
     align-items: center;
@@ -14,66 +18,68 @@ background: linear-gradient(135deg, #2e7f5f 0%, #074055 60%);    color: #222;
     width: 100vw;
     z-index: 100;
 }
+
 .main-nav img {
     height: 40px;
     width: auto;
     margin-right: 15px;
 }
+
 .main-title {
     color: #fff;
     font-size: 1.5em;
     font-weight: bold;
 }
+
 .nav-spacer {
     height: 60px;
 }
 
+/* Update intro section for better responsiveness */
 .intro-section {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    min-height: 75vh;
+    padding: 80px 20px 20px;
+    min-height: 80vh;
+    gap: 20px;
 }
+
 .intro-quote {
     flex: 1;
+    max-width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0 30px;
 }
+
 .intro-quote blockquote {
-    font-size: 1.3em;
+    font-size: clamp(1rem, 2.5vw, 1.3em);
     color: #fff;
     font-style: italic;
     text-align: left;
     margin: 0;
 }
+
 .intro-globe {
     flex: 1;
+    max-width: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 #globe-canvas {
     background: transparent;
     max-width: 100%;
-}
-.video-section {
-    padding: 0;
-    margin: 0;
-}
-.video-section video {
-    width: 100vw;
-    max-width: 100%;
     height: auto;
-    display: block;
-    margin: 0 auto;
-    object-fit: cover;
 }
 
 .video-section {
+    padding: 0;
+    margin: 0;
     width: 100vw;
     height: 45vh;
     background: #111;
@@ -92,8 +98,7 @@ background: linear-gradient(135deg, #2e7f5f 0%, #074055 60%);    color: #222;
 
 .who-section {
     padding: 2.5rem 2rem;
-    margin-left: 4rem;
-    margin-right: 4rem;
+    margin: 2rem;
     background-color: #222;
     border-radius: 20px;
     box-shadow: 0 6px 32px rgba(30, 60, 120, 0.10), 0 1.5px 6px rgba(0,0,0,0.04);
@@ -126,4 +131,67 @@ background: linear-gradient(135deg, #2e7f5f 0%, #074055 60%);    color: #222;
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     display: block;
     margin: 0 auto;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+    .intro-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 80px 15px 20px;
+        min-height: 90vh;
+    }
+    
+    .intro-quote, .intro-globe {
+        max-width: 100%;
+        flex: none;
+        padding: 10px;
+    }
+    
+    .intro-quote {
+        order: 1;
+        margin-bottom: 20px;
+    }
+    
+    .intro-globe {
+        order: 2;
+        max-width: 90%;
+    }
+    
+    #globe-canvas {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .who-section {
+        margin: 1rem;
+        padding: 2rem 1.5rem;
+    }
+    
+    .main-nav {
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .intro-section {
+        padding: 70px 10px 15px;
+    }
+    
+    .who-section {
+        margin: 0.5rem;
+        padding: 1.5rem 1rem;
+    }
+    
+    #globe-canvas {
+        max-width: 300px;
+    }
+    
+    .main-nav {
+        padding: 8px 10px;
+    }
+    
+    .main-title {
+        font-size: 1.3em;
+    }
 }

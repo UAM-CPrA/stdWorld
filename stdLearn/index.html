@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>std::Learn - std::World</title>
+    <link rel="icon" type="image/png" href="_img/favicon.png">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&family=Source+Code+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gold: #FFD54F;
+            --secondary-gold: #FFB300;
+            --accent-white: #ffffff;
+            --accent-light-grey: #f8fafc;
+            --white: #ffffff;
+            --light-grey: #f8fafc;
+            --dark-blue: #074055;
+            --teal: #2e7f5f;
+            --dark-text: #1f2937;
+            --medium-grey: #6b7280;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --shadow-light: 0 4px 16px rgba(0, 0, 0, 0.1);
+            --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.15);
+            
+            /* Dark theme variables (only theme) */
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+            --card-bg: #1e293b;
+            --sidebar-bg: #1e293b;
+            --navbar-bg: linear-gradient(135deg, #1e293b 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.98) 100%);
+            --dropdown-bg: #1e293b;
+            --hover-bg: #334155;
+            --progress-bg: rgba(71, 85, 105, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--primary-gold), var(--secondary-gold));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, var(--secondary-gold), var(--primary-gold));
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', 'Consolas', 'Monaco', 'Courier New', monospace;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: drift 30s infinite linear;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Essential animations only */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Loading animations */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Enhanced focus states for accessibility */
+        .nav-item:focus,
+        .concept-card:focus,
+        .fab:focus {
+            outline: 2px solid var(--primary-gold);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(255, 213, 79, 0.3);
+        }
+
+        /* Clickable indicator animations */
+        .clickable-indicator {
+            position: relative;
+        }
+
+        .clickable-indicator::after {
+            content: '→';
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%) translateX(10px);
+            opacity: 0;
+            color: var(--primary-gold);
+            font-weight: bold;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .clickable-indicator:hover::after {
+            transform: translateY(-50%) translateX(0);
+            opacity: 1;
+        }
+
+        /* Smooth transitions for theme changes */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Layout */
+        .main-layout {
+            display: flex;
+            min-height: calc(100vh - 50px);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Left Sidebar Navigation */
+        .sidebar {
+            width: 300px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 50px;
+            height: calc(100vh - 50px);
+            overflow-y: auto;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem 1rem;
+            background: var(--sidebar-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .sidebar-header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1.5rem;
+            right: 1.5rem;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--secondary-gold));
+        }
+
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            top: -1rem;
+            left: 1.5rem;
+            right: 1.5rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+        }
+
+        .sidebar-header h2 {
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 3px solid var(--secondary-gold);
+        }
+
+        .nav-item {
+            display: block;
+            padding: 0.9rem 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 3px solid transparent;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--primary-gold);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            transform-origin: bottom;
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            width: 20px;
+            height: 20px;
+            transform: translateY(-50%) scale(0);
+            transition: transform 0.3s ease;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-gold);
+            background: rgba(255, 213, 79, 0.05);
+            border-left-color: transparent;
+            transform: translateX(8px);
+            text-shadow: 0 0 8px rgba(255, 213, 79, 0.3);
+        }
+
+        .nav-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .nav-item:hover::after {
+            transform: translateY(-50%) scale(1);
+        }
+
+        /* Navigation difficulty indicators */
+        .nav-item .nav-difficulty-indicator {
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%) scale(0);
+            transition: transform 0.3s ease;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-item:hover .nav-difficulty-indicator {
+            transform: translateY(-50%) scale(1);
+        }
+
+        .nav-difficulty-indicator .difficulty-dot {
+            border-radius: 50%;
+        }
+
+        /* Easy - 1 green dot for nav */
+        .nav-difficulty-indicator.difficulty-easy .difficulty-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Intermediate - 2 yellow dots for nav */
+        .nav-difficulty-indicator.difficulty-intermediate {
+            gap: 2px;
+        }
+
+        .nav-difficulty-indicator.difficulty-intermediate .difficulty-dot {
+            width: 5px;
+            height: 5px;
+            background: #f59e0b;
+            box-shadow: 0 0 3px rgba(245, 158, 11, 0.6);
+        }
+
+        /* Hard - 3 red dots in pyramid for nav */
+        .nav-difficulty-indicator.difficulty-hard {
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .nav-difficulty-indicator.difficulty-hard .difficulty-dot {
+            width: 4px;
+            height: 4px;
+            background: #ef4444;
+            box-shadow: 0 0 3px rgba(239, 68, 68, 0.6);
+        }
+
+        .nav-difficulty-indicator.difficulty-hard .dot-row-1 {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-difficulty-indicator.difficulty-hard .dot-row-2 {
+            display: flex;
+            gap: 2px;
+        }
+
+        /* ICPC - 4 purple squares for nav */
+        .nav-difficulty-indicator.difficulty-icpc {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            padding: 2px;
+        }
+
+        .nav-difficulty-indicator.difficulty-icpc .difficulty-dot {
+            width: 5px;
+            height: 5px;
+            background: #8b5cf6;
+            border-radius: 1px;
+            box-shadow: 0 0 3px rgba(139, 92, 246, 0.6);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 213, 79, 0.1);
+            border-left-color: var(--secondary-gold);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* .nav-item:hover {
+            background: var(--light-grey);
+            border-left-color: var(--primary-gold);
+            transform: translateX(5px);
+        } */
+
+        /* .nav-item.active {
+            background: linear-gradient(90deg, var(--primary-gold), transparent);
+            border-left-color: var(--dark-blue);
+            color: var(--dark-blue);
+            font-weight: 500;
+        } */
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            padding: 2rem;
+            max-width: calc(100vw - 300px);
+            animation: fadeInScale 0.8s ease-out 0.2s both;
+        }
+
+        .content-header {
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            padding: 3rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            position: relative;
+        }
+
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--secondary-gold));
+            border-radius: 12px 12px 0 0;
+        }
+
+        .content-header h1 {
+            font-size: 3rem;
+            color: var(--secondary-gold);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .content-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .content-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--secondary-gold));
+            border-radius: 12px 12px 0 0;
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .content-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 213, 79, 0.15);
+            border-color: var(--primary-gold);
+        }
+
+        .content-section:hover::before {
+            transform: scaleX(1);
+        }
+
+        .content-section h2 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+
+        /* Difficulty indicators */
+        .difficulty-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .difficulty-dot {
+            border-radius: 50%;
+        }
+
+        /* Easy - 1 green dot */
+        .difficulty-easy .difficulty-dot {
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+        }
+
+        /* Intermediate - 2 yellow dots */
+        .difficulty-intermediate .difficulty-dot {
+            width: 10px;
+            height: 10px;
+            background: #f59e0b;
+            box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+        }
+
+        /* Hard - 3 red dots in pyramid */
+        .difficulty-hard {
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .difficulty-hard .difficulty-dot {
+            width: 7px;
+            height: 7px;
+            background: #ef4444;
+            box-shadow: 0 0 5px rgba(239, 68, 68, 0.6);
+        }
+
+        .difficulty-hard .dot-row-1 {
+            display: flex;
+            justify-content: center;
+        }
+
+        .difficulty-hard .dot-row-2 {
+            display: flex;
+            gap: 3px;
+        }
+
+        /* ICPC - 4 purple squares */
+        .difficulty-icpc {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+            padding: 3px;
+        }
+
+        .difficulty-icpc .difficulty-dot {
+            width: 9px;
+            height: 9px;
+            background: #8b5cf6;
+            border-radius: 2px;
+            box-shadow: 0 0 6px rgba(139, 92, 246, 0.6);
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .concept-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 213, 79, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 213, 79, 0.2);
+            border-color: var(--primary-gold);
+            background: linear-gradient(135deg, var(--card-bg), rgba(255, 213, 79, 0.05));
+        }
+
+        .concept-card:hover::before {
+            left: 100%;
+        }
+
+        .concept-card:hover h3 {
+            color: var(--primary-gold);
+            text-shadow: 0 0 8px rgba(255, 213, 79, 0.3);
+        }
+
+        .concept-card:active {
+            transform: translateY(-2px) scale(1.01);
+            transition: all 0.15s ease;
+        }
+
+        .concept-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+            }
+
+            .content {
+                max-width: 100%;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: #f8f9fa;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .cpra-logo-small {
+            height: 25px;
+            width: auto;
+            border-radius: 4px;
+            opacity: 0.9;
+        }
+
+        .by-text {
+            color: var(--white);
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--secondary-gold), var(--primary-gold));
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(255, 213, 79, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            border: none;
+        }
+
+        .fab:hover {
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 213, 79, 0.6);
+            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
+        }
+
+        .fab:active {
+            transform: translateY(-2px) scale(1.05);
+            transition: all 0.15s ease;
+        }
+
+        /* Progress indicator */
+        .progress-indicator {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--progress-bg);
+            z-index: 1020;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-gold), var(--secondary-gold));
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 8px rgba(255, 213, 79, 0.5);
+        }
+
+        /* Enhanced hover effects for interactive elements */
+        .interactive-glow {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .interactive-glow:hover::before {
+            left: 100%;
+        }
+
+        /* Enhanced Navbar Styles */
+        .navbar {
+            background: var(--navbar-bg) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+            transition: all 0.3s ease !important;
+            padding: 0.3rem 0 !important;
+            min-height: 50px !important;
+        }
+
+        .navbar-brand {
+            z-index: 10;
+            font-size: 1.3rem !important;
+            color: var(--text-primary) !important;
+            font-weight: 700 !important;
+            padding: 0.3rem 0 !important;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.02) !important;
+            color: var(--secondary-gold) !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-primary) !important;
+            font-weight: 500 !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px !important;
+            transition: all 0.3s ease !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            font-size: 0.9rem !important;
+            border: none !important;
+            background: none !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-gold) !important;
+            background: none !important;
+        }
+
+        .dropdown-menu {
+            background: var(--dropdown-bg) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            box-shadow: var(--shadow-light) !important;
+            padding: 0.5rem !important;
+            margin-top: 0.5rem !important;
+        }
+
+        .dropdown-item {
+            color: var(--text-primary) !important;
+            padding: 0.8rem 1.2rem !important;
+            border-radius: 6px !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+        }
+
+        .dropdown-item:hover {
+            background: none !important;
+            color: var(--primary-gold) !important;
+        }
+
+        .navbar-toggler {
+            border: none !important;
+            padding: 0.5rem !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.25) !important;
+        }
+
+        .navbar-toggler:hover {
+            background: rgba(139, 92, 246, 0.1) !important;
+            transform: scale(1.1) !important;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+            transition: all 0.3s ease !important;
+        }
+
+        /* Particle animation for navbar */
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-30px) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="font-family: 'JetBrains Mono', 'Consolas', monospace; z-index: 1030;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+                <img src="_img/stdLearnLogo.png" alt="std::Learn" style="height: 40px; width: auto;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTree" aria-controls="navbarTree" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTree">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="learnDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-rocket" style="margin-right: 0.5rem;"></i>
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="learnDropdown" style="min-width: 200px;">
+                            <li><a class="dropdown-item" href="../index.html">
+                                <i class="fas fa-globe" style="margin-right: 0.5rem; color: var(--primary-gold);"></i>
+                                std::World
+                            </a></li>
+                            <li><a class="dropdown-item" href="https://uleague.std.world" target="_blank">
+                                <i class="fas fa-trophy" style="margin-right: 0.5rem; color: var(--primary-gold);"></i>
+                                std::ULeague
+                            </a></li>
+                            <li><a class="dropdown-item" href="https://github.com/UAM-CPrA" target="_blank">
+                                <i class="fas fa-users" style="margin-right: 0.5rem; color: var(--primary-gold);"></i>
+                                std::Connect
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="main-layout" style="margin-top: 50px;">
+        <!-- Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>📚 Learning Path</h2>
+                <p>Navigate through competitive programming concepts</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <!-- Navigation will be dynamically loaded here -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <div class="content-header">
+                <h1>Competitive Programming Concepts</h1>
+                <p>Master the fundamental algorithms and advanced techniques of competitive programming through structured learning modules.</p>
+            </div>
+            <!-- Content will be dynamically loaded here -->
+        </main>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+    ">
+        <div style="text-align: center; color: white;">
+            <div style="
+                width: 50px;
+                height: 50px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-top: 3px solid white;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1rem;
+            "></div>
+            <h3 style="font-family: 'JetBrains Mono', monospace; margin: 0;">std::Loading...</h3>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="scrollToTop" title="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Modern page enhancement features
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePageEnhancements();
+            initializeScrollEffects();
+            initializeInteractiveElements();
+        });
+
+        function initializePageEnhancements() {
+            // Add stagger animation to cards
+            const cards = document.querySelectorAll('.concept-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'slideInUp 0.8s ease-out both';
+            });
+
+            // Add glow effect to interactive elements
+            const interactiveElements = document.querySelectorAll('.concept-card, .nav-item, .content-section');
+            interactiveElements.forEach(element => {
+                element.classList.add('interactive-glow');
+            });
+        }
+
+        function initializeScrollEffects() {
+            const progressBar = document.getElementById('progressBar');
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+
+            // Update progress bar on scroll
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                
+                if (progressBar) {
+                    progressBar.style.width = scrolled + '%';
+                }
+
+                // Show/hide scroll to top button
+                if (scrollToTopBtn) {
+                    if (winScroll > 300) {
+                        scrollToTopBtn.style.opacity = '1';
+                        scrollToTopBtn.style.pointerEvents = 'auto';
+                    } else {
+                        scrollToTopBtn.style.opacity = '0';
+                        scrollToTopBtn.style.pointerEvents = 'none';
+                    }
+                }
+            });
+
+            // Scroll to top functionality
+            if (scrollToTopBtn) {
+                scrollToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // Parallax effect disabled for content header
+            // const contentHeader = document.querySelector('.content-header');
+            // window.addEventListener('scroll', () => {
+            //     const scrolled = window.pageYOffset;
+            //     if (contentHeader) {
+            //         contentHeader.style.transform = `translateY(${scrolled * 0.1}px)`;
+            //     }
+            // });
+        }
+
+        function initializeInteractiveElements() {
+            // Add click ripple effect
+            const clickableElements = document.querySelectorAll('.concept-card, .nav-item, .fab');
+            
+            clickableElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = element.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    element.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add CSS for ripple effect
+            const rippleCSS = `
+                .ripple {
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s linear;
+                    pointer-events: none;
+                }
+                
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = rippleCSS;
+            document.head.appendChild(style);
+
+            // Enhanced navbar effects
+            initializeNavbarEffects();
+        }
+
+        function initializeNavbarEffects() {
+            const navbar = document.querySelector('.navbar');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+            // Enhanced blur effect on scroll (navbar always visible)
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                // Add blur effect based on scroll
+                if (currentScrollY > 50) {
+                    navbar.style.backdropFilter = 'blur(15px)';
+                    navbar.style.webkitBackdropFilter = 'blur(15px)';
+                } else {
+                    navbar.style.backdropFilter = 'blur(10px)';
+                    navbar.style.webkitBackdropFilter = 'blur(10px)';
+                }
+            });
+
+            // Add particle effect on hover
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', createNavParticles);
+            });
+
+            dropdownItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    // Try to get difficulty color from data attributes if available
+                    const level = item.dataset.level;
+                    const hoverColor = level ? getDifficultyColor(level) : '#10b981'; // Default to green instead of gold
+                    item.style.filter = 'brightness(1.1)';
+                    item.style.color = hoverColor;
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.filter = 'brightness(1)';
+                    item.style.color = '';
+                });
+            });
+        }
+
+        function createNavParticles(e) {
+            const element = e.target;
+            const rect = element.getBoundingClientRect();
+            
+            // Try to get difficulty color from the element's data attributes
+            const level = element.dataset.level || element.closest('[data-level]')?.dataset.level;
+            const particleColor = level ? getDifficultyColor(level) : '#10b981'; // Default to green
+            
+            for (let i = 0; i < 6; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    background: linear-gradient(45deg, ${particleColor}, #8b5cf6);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1000;
+                    left: ${rect.left + Math.random() * rect.width}px;
+                    top: ${rect.top + Math.random() * rect.height}px;
+                    animation: particleFloat 1s ease-out forwards;
+                `;
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
+
+        // Enhanced error handling with better UX
+        function handle404Error(url) {
+            console.log('404 Error detected for URL:', url);
+            
+            // Show a fancy error notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: linear-gradient(135deg, #ef4444, #dc2626);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+                z-index: 10000;
+                animation: slideInUp 0.5s ease-out;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Oops: that is not done already</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove notification after 4 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }
+            }, 4000);
+        }
+
+        // Enhanced navigation function with 404 handling
+        function navigateToPage(url) {
+            // Check if the URL exists by making a HEAD request
+            fetch(url, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = url;
+                    } else {
+                        handle404Error(url);
+                    }
+                })
+                .catch(error => {
+                    console.error('Navigation error:', error);
+                    handle404Error(url);
+                });
+        }
+
+        // Load concepts data and populate the page
+        async function loadConceptsData() {
+            try {
+                const response = await fetch('concepts/meta.json');
+                const data = await response.json();
+                
+                // Update page title and description
+                document.querySelector('.content-header h1').textContent = data.title;
+                document.querySelector('.content-header p').textContent = data.description;
+                
+                // Clear existing sidebar navigation and content
+                const sidebarNav = document.querySelector('.sidebar-nav');
+                const content = document.querySelector('.content');
+                
+                // Clear all content including any article content
+                content.innerHTML = '';
+                
+                // Restore the content header
+                const contentHeader = document.createElement('div');
+                contentHeader.className = 'content-header';
+                contentHeader.innerHTML = `
+                    <h1>${data.title}</h1>
+                    <p>${data.description}</p>
+                `;
+                content.appendChild(contentHeader);
+                
+                // Generate sidebar navigation with new hierarchical format
+                generateSidebarNavigation(data.sections, sidebarNav);
+                
+                // Generate main content sections with new format
+                generateMainContent(data.sections, content);
+                
+                // Update URL to remove any article parameters
+                window.history.replaceState({}, data.title, window.location.pathname);
+                
+                console.log('Loaded concepts data:', data);
+                
+            } catch (error) {
+                console.error('Error loading concepts data:', error);
+                // Fallback error display
+                const content = document.querySelector('.content');
+                const errorDiv = document.createElement('div');
+                errorDiv.style.padding = '2rem';
+                errorDiv.style.textAlign = 'center';
+                errorDiv.style.color = '#ef4444';
+                errorDiv.innerHTML = `
+                    <h2>Error Loading Content</h2>
+                    <p>Failed to load concepts data. Please check the console for details.</p>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+                content.appendChild(errorDiv);
+            }
+        }
+
+        // Helper function to get difficulty level for a section based on its ID and JSON data
+        function getSectionDifficultyLevel(sectionId, sectionsData) {
+            // Define section difficulty mapping based on the JSON structure
+            const sectionDifficultyMap = {
+                'fundamentals': 'Beginner',
+                'data-structures': 'Intermediate', 
+                'algorithms': 'Advanced',
+                'advanced-topics': 'ICPC',
+                'graph-algorithms': 'Advanced',
+                'dynamic-programming': 'ICPC',
+                'math': 'Intermediate',
+                'strings': 'Intermediate'
+            };
+            
+            // First try to get from the mapping
+            if (sectionDifficultyMap[sectionId]) {
+                return sectionDifficultyMap[sectionId];
+            }
+            
+            // Try to find in the actual sections data
+            if (sectionsData) {
+                const section = sectionsData.find(s => s.id === sectionId);
+                if (section && section.children && section.children.length > 0) {
+                    // Get the most common level from children, or first available level
+                    const levels = section.children.filter(c => c.level).map(c => c.level);
+                    if (levels.length > 0) {
+                        return levels[0]; // Return first available level
+                    }
+                }
+            }
+            
+            return 'Beginner'; // Default fallback
+        }
+
+        // Helper function to get difficulty color based on level
+        function getDifficultyColor(level) {
+            if (!level) return '#10b981'; // Default to green instead of gold
+            
+            const levelLower = level.toLowerCase();
+            
+            if (levelLower.includes('beginner') || levelLower.includes('easy') || levelLower.includes('basic')) {
+                return '#10b981'; // Green
+            } else if (levelLower.includes('intermediate') || levelLower.includes('medium')) {
+                return '#f59e0b'; // Yellow/Orange
+            } else if (levelLower.includes('hard') || levelLower.includes('advanced')) {
+                return '#ef4444'; // Red
+            } else if (levelLower.includes('icpc') || levelLower.includes('expert') || levelLower.includes('contest')) {
+                return '#8b5cf6'; // Purple
+            } else {
+                return '#10b981'; // Default to green for unknown levels
+            }
+        }
+
+        function generateSidebarNavigation(sections, container) {
+            container.innerHTML = '';
+            
+            sections.forEach(section => {
+                const navSection = document.createElement('div');
+                navSection.className = 'nav-section';
+                
+                const sectionTitle = document.createElement('div');
+                sectionTitle.className = 'nav-section-title';
+                sectionTitle.textContent = section.title;
+                navSection.appendChild(sectionTitle);
+                
+                // Add children as nav items (like the original format)
+                if (section.children && section.children.length > 0) {
+                    section.children.forEach((child, index) => {
+                        const navItem = document.createElement('a');
+                        navItem.href = child.url || `#${child.id}`;
+                        navItem.className = 'nav-item';
+                        navItem.textContent = child.title;
+                        
+                        // Store the level data for hover effects
+                        navItem.dataset.level = child.level || '';
+                        
+                        // Add difficulty indicator based on level
+                        if (child.level) {
+                            const difficultyIndicator = getNavDifficultyIndicator(child.level);
+                            navItem.insertAdjacentHTML('beforeend', difficultyIndicator);
+                        }
+                        
+                        // Add click handler for navigation items too
+                        navItem.addEventListener('click', async (e) => {
+                            e.preventDefault();
+                            
+                            if (child.type === 'folder') {
+                                // Load folder content
+                                loadFolderContent(child.path);
+                            } else if (child.type === 'page') {
+                                // Navigate directly to the HTML file using safe navigation
+                                navigateToPage(child.path || child.url);
+                            }
+                        });
+                        
+                        // Add hover effects with difficulty-based colors
+                        navItem.addEventListener('mouseenter', () => {
+                            const difficultyColor = getDifficultyColor(child.level);
+                            navItem.style.color = difficultyColor;
+                            navItem.style.borderLeftColor = difficultyColor;
+                            navItem.style.transition = 'all 0.3s ease';
+                        });
+                        
+                        navItem.addEventListener('mouseleave', () => {
+                            navItem.style.color = '';
+                            navItem.style.borderLeftColor = '';
+                        });
+                        
+                        // Add subtle metadata in navigation (keeping the cool feature but simpler)
+                        if (child.level || child.readingTime || child.featured) {
+                            const metadata = document.createElement('div');
+                            metadata.className = 'nav-item-metadata';
+                            metadata.style.fontSize = '0.75rem';
+                            metadata.style.color = '#9ca3af';
+                            metadata.style.marginTop = '0.2rem';
+                            metadata.style.opacity = '0.8';
+                            
+                            const metaParts = [];
+                            if (child.level) metaParts.push(child.level);
+                            if (child.readingTime) metaParts.push(`${child.readingTime}min`);
+                            if (child.featured) metaParts.push('★');
+                            
+                            metadata.textContent = metaParts.join(' • ');
+                            navItem.appendChild(metadata);
+                        }
+                        
+                        navSection.appendChild(navItem);
+                    });
+                }
+                
+                container.appendChild(navSection);
+            });
+        }
+
+        function generateMainContent(sections, container) {
+            const header = container.querySelector('.content-header');
+            
+            sections.forEach(section => {
+                // Create content section for each main section (like the original format)
+                const contentSection = document.createElement('section');
+                contentSection.className = 'content-section';
+                contentSection.id = section.id;
+                
+                // Store the difficulty level for hover effects
+                const sectionLevel = getSectionDifficultyLevel(section.id, sections);
+                contentSection.dataset.level = sectionLevel;
+                
+                const sectionHeader = document.createElement('h2');
+                sectionHeader.innerHTML = `<span class="section-icon">${getIconForSection(section.id)}</span>${section.title}`;
+                
+                const description = document.createElement('p');
+                description.textContent = section.description;
+                
+                contentSection.appendChild(sectionHeader);
+                contentSection.appendChild(description);
+                
+                // Add hover effects with difficulty-based colors for content sections
+                contentSection.addEventListener('mouseenter', () => {
+                    const difficultyColor = getDifficultyColor(sectionLevel);
+                    contentSection.style.borderLeftColor = difficultyColor;
+                    contentSection.style.boxShadow = `0 4px 20px ${difficultyColor}20`;
+                    contentSection.style.transition = 'all 0.3s ease';
+                    
+                    // Also change the section header color
+                    const header = contentSection.querySelector('h2');
+                    if (header) {
+                        header.style.color = difficultyColor;
+                        header.style.transition = 'all 0.3s ease';
+                    }
+                });
+                
+                contentSection.addEventListener('mouseleave', () => {
+                    contentSection.style.borderLeftColor = '';
+                    contentSection.style.boxShadow = '';
+                    
+                    // Reset section header color
+                    const header = contentSection.querySelector('h2');
+                    if (header) {
+                        header.style.color = '';
+                    }
+                });
+                
+                // Convert children back to concepts format (like original)
+                if (section.children && section.children.length > 0) {
+                    const conceptGrid = document.createElement('div');
+                    conceptGrid.className = 'concept-grid';
+                    
+                    section.children.forEach(child => {
+                        const conceptCard = document.createElement('div');
+                        conceptCard.className = 'concept-card clickable-indicator';
+                        
+                        // Store the level data for hover effects
+                        conceptCard.dataset.level = child.level || '';
+                        
+                        const conceptTitle = document.createElement('h3');
+                        conceptTitle.textContent = child.title;
+                        
+                        const conceptDescription = document.createElement('p');
+                        conceptDescription.textContent = child.description;
+                        
+                        conceptCard.appendChild(conceptTitle);
+                        conceptCard.appendChild(conceptDescription);
+                        
+                            // Add the new metadata section (keeping the cool labels)
+                            if (child.level || child.readingTime || child.featured || (child.tags && child.tags.length > 0)) {
+                                const metadata = document.createElement('div');
+                                metadata.className = 'concept-metadata';
+                                metadata.style.cssText = `
+                                    margin-top: 1.5rem;
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    gap: 0.5rem;
+                                    fontSize: 0.8rem;
+                                `;
+                                
+                                // Level badge
+                                if (child.level) {
+                                    const levelBadge = document.createElement('span');
+                                    levelBadge.textContent = child.level;
+                                    levelBadge.style.cssText = `
+                                        background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+                                        color: #374151;
+                                        padding: 0.3rem 0.8rem;
+                                        border-radius: 15px;
+                                        font-weight: 600;
+                                        font-size: 0.75rem;
+                                        border: 1px solid rgba(55, 65, 81, 0.1);
+                                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                                        transition: all 0.3s ease;
+                                    `;
+                                    
+                                    // Get difficulty color based on level
+                                    const levelLower = child.level.toLowerCase();
+                                    
+                                    levelBadge.addEventListener('mouseenter', () => {
+                                        const difficultyColor = getDifficultyColor(child.level);
+                                        const hoverColor = difficultyColor.includes('linear-gradient') ? difficultyColor : `linear-gradient(135deg, ${difficultyColor}, ${difficultyColor})`;
+                                        const hoverShadow = `0 4px 12px ${difficultyColor}40`;
+                                        
+                                        levelBadge.style.transform = 'scale(1.05)';
+                                        levelBadge.style.background = hoverColor;
+                                        levelBadge.style.boxShadow = hoverShadow;
+                                        levelBadge.style.color = 'white';
+                                    });
+                                    levelBadge.addEventListener('mouseleave', () => {
+                                        levelBadge.style.transform = 'scale(1)';
+                                        levelBadge.style.background = 'linear-gradient(135deg, #e5e7eb, #f3f4f6)';
+                                        levelBadge.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                                        levelBadge.style.color = '#374151';
+                                    });
+                                    metadata.appendChild(levelBadge);
+                                }
+                                
+                                // Reading time badge
+                                if (child.readingTime) {
+                                    const timeBadge = document.createElement('span');
+                                    timeBadge.innerHTML = `<i class="fas fa-clock" style="margin-right: 0.3rem;"></i>${child.readingTime} min read`;
+                                    timeBadge.style.cssText = `
+                                        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+                                        color: #1e40af;
+                                        padding: 0.3rem 0.8rem;
+                                        border-radius: 15px;
+                                        font-weight: 600;
+                                        font-size: 0.75rem;
+                                        border: 1px solid rgba(30, 64, 175, 0.2);
+                                        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+                                        transition: all 0.3s ease;
+                                    `;
+                                    timeBadge.addEventListener('mouseenter', () => {
+                                        const difficultyColor = getDifficultyColor(child.level);
+                                        timeBadge.style.transform = 'scale(1.05)';
+                                        timeBadge.style.background = difficultyColor ? `linear-gradient(135deg, ${difficultyColor}, #bfdbfe)` : 'linear-gradient(135deg, #bfdbfe, #93c5fd)';
+                                        timeBadge.style.color = 'white';
+                                    });
+                                    timeBadge.addEventListener('mouseleave', () => {
+                                        timeBadge.style.transform = 'scale(1)';
+                                        timeBadge.style.background = 'linear-gradient(135deg, #dbeafe, #bfdbfe)';
+                                        timeBadge.style.color = '#1e40af';
+                                    });
+                                    metadata.appendChild(timeBadge);
+                                }
+                                
+                                // Featured badge
+                                if (child.featured) {
+                                    const featuredBadge = document.createElement('span');
+                                    featuredBadge.innerHTML = '<i class="fas fa-star" style="margin-right: 0.3rem;"></i>Featured';
+                                    featuredBadge.style.cssText = `
+                                        background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
+                                        color: #92400e;
+                                        padding: 0.3rem 0.8rem;
+                                        border-radius: 15px;
+                                        font-weight: bold;
+                                        font-size: 0.75rem;
+                                        border: 1px solid rgba(251, 191, 36, 0.3);
+                                        box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+                                        animation: pulse 2s infinite;
+                                        transition: all 0.3s ease;
+                                    `;
+                                    featuredBadge.addEventListener('mouseenter', () => {
+                                        const difficultyColor = getDifficultyColor(child.level);
+                                        featuredBadge.style.transform = 'scale(1.1)';
+                                        featuredBadge.style.boxShadow = difficultyColor ? `0 4px 12px ${difficultyColor}60` : '0 4px 12px rgba(251, 191, 36, 0.6)';
+                                        featuredBadge.style.background = difficultyColor ? `linear-gradient(135deg, ${difficultyColor}, var(--secondary-gold))` : 'var(--primary-gold)';
+                                        featuredBadge.style.color = 'white';
+                                    });
+                                    featuredBadge.addEventListener('mouseleave', () => {
+                                        featuredBadge.style.transform = 'scale(1)';
+                                        featuredBadge.style.boxShadow = '0 2px 8px rgba(251, 191, 36, 0.4)';
+                                        featuredBadge.style.background = 'linear-gradient(135deg, var(--primary-gold), var(--secondary-gold))';
+                                        featuredBadge.style.color = '#92400e';
+                                    });
+                                    metadata.appendChild(featuredBadge);
+                                }
+                                
+                                // Tags
+                                if (child.tags && child.tags.length > 0) {
+                                    child.tags.slice(0, 3).forEach(tag => {
+                                        const tagBadge = document.createElement('span');
+                                        tagBadge.textContent = `#${tag}`;
+                                        tagBadge.style.cssText = `
+                                            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+                                            color: #6b7280;
+                                            padding: 0.25rem 0.6rem;
+                                            border-radius: 12px;
+                                            font-size: 0.7rem;
+                                            font-weight: 500;
+                                            border: 1px solid rgba(107, 114, 128, 0.2);
+                                            transition: all 0.3s ease;
+                                        `;
+                                        tagBadge.addEventListener('mouseenter', () => {
+                                            const difficultyColor = getDifficultyColor(child.level);
+                                            tagBadge.style.background = `linear-gradient(135deg, ${difficultyColor}, var(--primary-gold))`;
+                                            tagBadge.style.color = 'white';
+                                            tagBadge.style.transform = 'scale(1.05)';
+                                        });
+                                        tagBadge.addEventListener('mouseleave', () => {
+                                            tagBadge.style.background = 'linear-gradient(135deg, #f3f4f6, #e5e7eb)';
+                                            tagBadge.style.color = '#6b7280';
+                                            tagBadge.style.transform = 'scale(1)';
+                                        });
+                                        metadata.appendChild(tagBadge);
+                                    });
+                                }
+                                
+                                conceptCard.appendChild(metadata);
+                            }                        // Add click handler for navigation
+                        if (child.url) {
+                            conceptCard.style.cursor = 'pointer';
+                            
+                            conceptCard.addEventListener('click', async () => {
+                                // Add click animation
+                                conceptCard.style.transform = 'scale(0.98)';
+                                setTimeout(() => {
+                                    conceptCard.style.transform = '';
+                                }, 150);
+                                
+                                // Check if it's a folder or specific article
+                                if (child.type === 'folder') {
+                                    // It's a folder - load the meta.json from that folder
+                                    loadFolderContent(child.path);
+                                } else if (child.type === 'page') {
+                                    // Navigate directly to the HTML file using safe navigation
+                                    navigateToPage(child.path || child.url);
+                                } else {
+                                    // Fallback - navigate to the URL using safe navigation
+                                    navigateToPage(child.path || child.url);
+                                }
+                            });
+                            
+                            // Enhanced hover effect for clickable cards
+                            conceptCard.addEventListener('mouseenter', () => {
+                                // Get difficulty color based on level
+                                const difficultyColor = getDifficultyColor(child.level);
+                                
+                                conceptCard.style.borderColor = difficultyColor;
+                                conceptCard.style.cursor = 'pointer';
+                                const title = conceptCard.querySelector('h3');
+                                if (title) {
+                                    title.style.color = difficultyColor;
+                                    title.style.transform = 'translateX(8px)';
+                                    title.style.transition = 'all 0.3s ease';
+                                }
+                            });
+                            
+                            conceptCard.addEventListener('mouseleave', () => {
+                                conceptCard.style.borderColor = 'var(--border-color)';
+                                const title = conceptCard.querySelector('h3');
+                                if (title) {
+                                    title.style.color = 'var(--text-primary)';
+                                    title.style.transform = 'translateX(0)';
+                                }
+                            });
+                        }
+                        
+                        conceptGrid.appendChild(conceptCard);
+                    });
+                    
+                    contentSection.appendChild(conceptGrid);
+                }
+                
+                container.appendChild(contentSection);
+            });
+        }
+
+        // Function to load content from a specific folder
+        async function loadFolderContent(folderPath) {
+            try {
+                // Construct the meta.json path for the folder
+                const metaPath = `${folderPath}/meta.json`;
+                console.log('Loading folder content from:', metaPath);
+                
+                const response = await fetch(metaPath);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${metaPath}: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Update page title and description
+                document.querySelector('.content-header h1').textContent = data.title;
+                document.querySelector('.content-header p').textContent = data.description;
+                
+                // Update browser history and URL (optional)
+                const newUrl = `${window.location.pathname}?folder=${encodeURIComponent(folderPath)}`;
+                window.history.pushState({ folderPath }, data.title, newUrl);
+                
+                // Clear existing content
+                const sidebarNav = document.querySelector('.sidebar-nav');
+                const content = document.querySelector('.content');
+                
+                // Keep the header but remove existing sections
+                const existingSections = content.querySelectorAll('.content-section');
+                existingSections.forEach(section => section.remove());
+                
+                // Generate new content based on folder structure
+                if (data.items && data.items.length > 0) {
+                    // This is a leaf folder with items (articles)
+                    generateFolderContent(data, content);
+                    generateFolderNavigation(data, sidebarNav);
+                } else if (data.sections && data.sections.length > 0) {
+                    // This is a parent folder with sections
+                    generateSidebarNavigation(data.sections, sidebarNav);
+                    generateMainContent(data.sections, content);
+                }
+                
+                console.log('Loaded folder data:', data);
+                
+            } catch (error) {
+                console.error('Error loading folder content:', error);
+                // Show error message
+                const content = document.querySelector('.content');
+                const errorDiv = document.createElement('div');
+                errorDiv.style.padding = '2rem';
+                errorDiv.style.textAlign = 'center';
+                errorDiv.style.color = '#ef4444';
+                errorDiv.innerHTML = `
+                    <h2>Error Loading Folder</h2>
+                    <p>Failed to load content from folder. Please check the console for details.</p>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <button onclick="loadConceptsData()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--dark-blue); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Back to Main Page
+                    </button>
+                `;
+                content.appendChild(errorDiv);
+            }
+        }
+
+        // Function to generate content for a leaf folder (with items)
+        function generateFolderContent(data, container) {
+            const contentSection = document.createElement('section');
+            contentSection.className = 'content-section';
+            
+            // Determine difficulty level from the folder data or items
+            let folderLevel = 'Beginner'; // default
+            if (data.items && data.items.length > 0) {
+                // Get the most common level from items
+                const levels = data.items.filter(item => item.level).map(item => item.level);
+                if (levels.length > 0) {
+                    folderLevel = levels[0]; // Use first available level
+                }
+            }
+            contentSection.dataset.level = folderLevel;
+            
+            const sectionHeader = document.createElement('h2');
+            sectionHeader.innerHTML = `<span class="section-icon">📚</span>${data.title}`;
+            
+            const description = document.createElement('p');
+            description.textContent = data.description;
+            
+            contentSection.appendChild(sectionHeader);
+            contentSection.appendChild(description);
+            
+            // Add hover effects with difficulty-based colors for folder content sections
+            contentSection.addEventListener('mouseenter', () => {
+                const difficultyColor = getDifficultyColor(folderLevel);
+                contentSection.style.borderLeftColor = difficultyColor;
+                contentSection.style.boxShadow = `0 4px 20px ${difficultyColor}20`;
+                contentSection.style.transition = 'all 0.3s ease';
+                
+                // Also change the section header color
+                const header = contentSection.querySelector('h2');
+                if (header) {
+                    header.style.color = difficultyColor;
+                    header.style.transition = 'all 0.3s ease';
+                }
+            });
+            
+            contentSection.addEventListener('mouseleave', () => {
+                contentSection.style.borderLeftColor = '';
+                contentSection.style.boxShadow = '';
+                
+                // Reset section header color
+                const header = contentSection.querySelector('h2');
+                if (header) {
+                    header.style.color = '';
+                }
+            });
+            
+            if (data.items && data.items.length > 0) {
+                const conceptGrid = document.createElement('div');
+                conceptGrid.className = 'concept-grid';
+                
+                data.items.forEach(item => {
+                    const conceptCard = document.createElement('div');
+                    conceptCard.className = 'concept-card';
+                    
+                    // Store the level data for hover effects
+                    conceptCard.dataset.level = item.level || '';
+                    
+                    const conceptTitle = document.createElement('h3');
+                    conceptTitle.textContent = item.title;
+                    
+                    const conceptDescription = document.createElement('p');
+                    conceptDescription.textContent = item.description;
+                    
+                    conceptCard.appendChild(conceptTitle);
+                    conceptCard.appendChild(conceptDescription);
+                    
+                    // Add metadata for items
+                    if (item.level || item.readingTime || item.featured || (item.tags && item.tags.length > 0)) {
+                        const metadata = document.createElement('div');
+                        metadata.className = 'concept-metadata';
+                        metadata.style.marginTop = '1rem';
+                        metadata.style.display = 'flex';
+                        metadata.style.flexWrap = 'wrap';
+                        metadata.style.gap = '0.5rem';
+                        metadata.style.fontSize = '0.8rem';
+                        
+                        // Add badges (same as before)
+                        if (item.level) {
+                            const levelBadge = document.createElement('span');
+                            levelBadge.textContent = item.level;
+                            levelBadge.style.background = '#e5e7eb';
+                            levelBadge.style.color = '#374151';
+                            levelBadge.style.padding = '0.2rem 0.5rem';
+                            levelBadge.style.borderRadius = '12px';
+                            levelBadge.style.fontWeight = '500';
+                            metadata.appendChild(levelBadge);
+                        }
+                        
+                        if (item.readingTime) {
+                            const timeBadge = document.createElement('span');
+                            timeBadge.textContent = `${item.readingTime} min read`;
+                            timeBadge.style.background = '#dbeafe';
+                            timeBadge.style.color = '#1e40af';
+                            timeBadge.style.padding = '0.2rem 0.5rem';
+                            timeBadge.style.borderRadius = '12px';
+                            timeBadge.style.fontWeight = '500';
+                            metadata.appendChild(timeBadge);
+                        }
+                        
+                        if (item.featured) {
+                            const featuredBadge = document.createElement('span');
+                            featuredBadge.textContent = '★ Featured';
+                            featuredBadge.style.background = 'var(--primary-gold)';
+                            featuredBadge.style.color = '#92400e';
+                            featuredBadge.style.padding = '0.2rem 0.5rem';
+                            featuredBadge.style.borderRadius = '12px';
+                            featuredBadge.style.fontWeight = 'bold';
+                            metadata.appendChild(featuredBadge);
+                        }
+                        
+                        if (item.tags && item.tags.length > 0) {
+                            item.tags.slice(0, 3).forEach(tag => {
+                                const tagBadge = document.createElement('span');
+                                tagBadge.textContent = tag;
+                                tagBadge.style.background = '#f3f4f6';
+                                tagBadge.style.color = '#6b7280';
+                                tagBadge.style.padding = '0.2rem 0.5rem';
+                                tagBadge.style.borderRadius = '12px';
+                                tagBadge.style.fontSize = '0.75rem';
+                                metadata.appendChild(tagBadge);
+                            });
+                        }
+                        
+                        conceptCard.appendChild(metadata);
+                    }
+                    
+                    // Items are always articles, so navigate to HTML page
+                    if (item.url) {
+                        conceptCard.style.cursor = 'pointer';
+                        conceptCard.addEventListener('click', () => {
+                            if (item.url.startsWith('http')) {
+                                window.open(item.url, '_blank');
+                            } else {
+                                navigateToPage(item.url);
+                            }
+                        });
+                        
+                        conceptCard.addEventListener('mouseenter', () => {
+                            const difficultyColor = getDifficultyColor(item.level);
+                            conceptCard.style.transform = 'translateY(-5px)';
+                            conceptCard.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
+                            conceptCard.style.borderColor = difficultyColor;
+                            
+                            const title = conceptCard.querySelector('h3');
+                            if (title) {
+                                title.style.color = difficultyColor;
+                                title.style.transition = 'all 0.3s ease';
+                            }
+                        });
+                        
+                        conceptCard.addEventListener('mouseleave', () => {
+                            conceptCard.style.transform = 'translateY(0)';
+                            conceptCard.style.boxShadow = 'none';
+                            conceptCard.style.borderColor = 'var(--border-color)';
+                            
+                            const title = conceptCard.querySelector('h3');
+                            if (title) {
+                                title.style.color = 'var(--text-primary)';
+                            }
+                        });
+                    }
+                    
+                    conceptGrid.appendChild(conceptCard);
+                });
+                
+                contentSection.appendChild(conceptGrid);
+            }
+            
+            container.appendChild(contentSection);
+        }
+
+        // Function to generate navigation for a folder
+        function generateFolderNavigation(data, container) {
+            container.innerHTML = '';
+            
+            // Add a back button
+            const backSection = document.createElement('div');
+            backSection.className = 'nav-section';
+            
+            const backButton = document.createElement('a');
+            backButton.href = '#';
+            backButton.className = 'nav-item';
+            backButton.textContent = '← Back to Main';
+            backButton.style.fontWeight = 'bold';
+            backButton.style.color = 'var(--blue)';
+            backButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadConceptsData();
+            });
+            
+            backSection.appendChild(backButton);
+            container.appendChild(backSection);
+            
+            // Show items if available
+            if (data.items && data.items.length > 0) {
+                const navSection = document.createElement('div');
+                navSection.className = 'nav-section';
+                
+                const sectionTitle = document.createElement('div');
+                sectionTitle.className = 'nav-section-title';
+                sectionTitle.textContent = data.title;
+                navSection.appendChild(sectionTitle);
+                
+                data.items.forEach((item, index) => {
+                    const navItem = document.createElement('a');
+                    navItem.href = item.url || `#${item.id}`;
+                    navItem.className = 'nav-item';
+                    navItem.textContent = item.title;
+                    
+                    // Store the level data for hover effects
+                    navItem.dataset.level = item.level || '';
+                    
+                    // Add difficulty indicator based on level
+                    if (item.level) {
+                        const difficultyIndicator = getNavDifficultyIndicator(item.level);
+                        navItem.insertAdjacentHTML('beforeend', difficultyIndicator);
+                    }
+                    
+                    // Add hover effects with difficulty-based colors
+                    navItem.addEventListener('mouseenter', () => {
+                        const difficultyColor = getDifficultyColor(item.level);
+                        navItem.style.color = difficultyColor;
+                        navItem.style.borderLeftColor = difficultyColor;
+                        navItem.style.transition = 'all 0.3s ease';
+                    });
+                    
+                    navItem.addEventListener('mouseleave', () => {
+                        navItem.style.color = '';
+                        navItem.style.borderLeftColor = '';
+                    });
+                    
+                    if (item.level || item.readingTime || item.featured) {
+                        const metadata = document.createElement('div');
+                        metadata.className = 'nav-item-metadata';
+                        metadata.style.fontSize = '0.75rem';
+                        metadata.style.color = '#9ca3af';
+                        metadata.style.marginTop = '0.2rem';
+                        metadata.style.opacity = '0.8';
+                        
+                        const metaParts = [];
+                        if (item.level) metaParts.push(item.level);
+                        if (item.readingTime) metaParts.push(`${item.readingTime}min`);
+                        if (item.featured) metaParts.push('★');
+                        
+                        metadata.textContent = metaParts.join(' • ');
+                        navItem.appendChild(metadata);
+                    }
+                    
+                    navSection.appendChild(navItem);
+                });
+                
+                container.appendChild(navSection);
+            }
+        }
+
+        function getNavDifficultyIndicator(level) {
+            if (!level) return '';
+            
+            const levelLower = level.toLowerCase();
+            let difficultyClass = 'difficulty-easy'; // default
+            let indicatorHTML = '';
+            
+            if (levelLower.includes('beginner') || levelLower.includes('easy') || levelLower.includes('basic')) {
+                difficultyClass = 'difficulty-easy';
+                indicatorHTML = '<div class="difficulty-dot"></div>';
+            } else if (levelLower.includes('intermediate') || levelLower.includes('medium')) {
+                difficultyClass = 'difficulty-intermediate';
+                indicatorHTML = '<div class="difficulty-dot"></div><div class="difficulty-dot"></div>';
+            } else if (levelLower.includes('hard') || levelLower.includes('advanced')) {
+                difficultyClass = 'difficulty-hard';
+                indicatorHTML = `
+                    <div class="dot-row-1">
+                        <div class="difficulty-dot"></div>
+                    </div>
+                    <div class="dot-row-2">
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                `;
+            } else if (levelLower.includes('icpc') || levelLower.includes('expert') || levelLower.includes('contest')) {
+                difficultyClass = 'difficulty-icpc';
+                indicatorHTML = `
+                    <div class="difficulty-dot"></div>
+                    <div class="difficulty-dot"></div>
+                    <div class="difficulty-dot"></div>
+                    <div class="difficulty-dot"></div>
+                `;
+            }
+            
+            return `<div class="nav-difficulty-indicator ${difficultyClass}">${indicatorHTML}</div>`;
+        }
+
+        function getIconForSection(sectionId) {
+            const difficultyIcons = {
+                'fundamentals': `
+                    <div class="difficulty-indicator difficulty-easy">
+                        <div class="difficulty-dot"></div>
+                    </div>
+                `,
+                'data-structures': `
+                    <div class="difficulty-indicator difficulty-intermediate">
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                `,
+                'algorithms': `
+                    <div class="difficulty-indicator difficulty-hard">
+                        <div class="dot-row-1">
+                            <div class="difficulty-dot"></div>
+                        </div>
+                        <div class="dot-row-2">
+                            <div class="difficulty-dot"></div>
+                            <div class="difficulty-dot"></div>
+                        </div>
+                    </div>
+                `,
+                'advanced-topics': `
+                    <div class="difficulty-indicator difficulty-icpc">
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                `,
+                'graph-algorithms': `
+                    <div class="difficulty-indicator difficulty-hard">
+                        <div class="dot-row-1">
+                            <div class="difficulty-dot"></div>
+                        </div>
+                        <div class="dot-row-2">
+                            <div class="difficulty-dot"></div>
+                            <div class="difficulty-dot"></div>
+                        </div>
+                    </div>
+                `,
+                'dynamic-programming': `
+                    <div class="difficulty-indicator difficulty-icpc">
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                `,
+                'math': `
+                    <div class="difficulty-indicator difficulty-intermediate">
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                `,
+                'strings': `
+                    <div class="difficulty-indicator difficulty-intermediate">
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                `
+            };
+            return difficultyIcons[sectionId] || `
+                <div class="difficulty-indicator difficulty-easy">
+                    <div class="difficulty-dot"></div>
+                </div>
+            `;
+        }
+
+        // Add click handlers for navigation
+        function addNavigationHandlers() {
+            document.addEventListener('click', (e) => {
+                if (e.target.matches('.nav-item')) {
+                    // Remove active class from all nav items
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    // Add active class to clicked item
+                    e.target.classList.add('active');
+                }
+            });
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show loading screen initially
+            const loadingScreen = document.getElementById('loadingScreen');
+            
+            // Hide loading screen after content is loaded
+            setTimeout(() => {
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 1500);
+
+            // Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const folderPath = urlParams.get('folder');
+            const articleId = urlParams.get('article');
+            
+            if (folderPath) {
+                loadFolderContent(folderPath);
+            } else if (articleId) {
+                // Need to find the article data - for now, go back to main and let user navigate
+                console.log('Article ID found in URL:', articleId);
+                loadConceptsData();
+            } else {
+                loadConceptsData();
+            }
+            
+            addNavigationHandlers();
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.folderPath) {
+                loadFolderContent(event.state.folderPath);
+            } else if (event.state && event.state.article) {
+                loadArticleContent(event.state.article);
+            } else {
+                loadConceptsData();
+            }
+        });
+    </script>
+    
+    <!-- Bootstrap JS Bundle (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 404 Handler -->
+    <script src="_404/404-handler.js"></script>
+</body>
+</html>

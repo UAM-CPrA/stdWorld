@@ -98,92 +98,111 @@ function loadCitiesFromJson(callback) {
             };
         }
         let rotY = 0, dragging = false, lastX = 0;
-        // Globe always large, inclined, and auto-rotating
-        const GLOBE_SCALE = 1.3;
-        let autoRotY = 0; // for continuous rotation
+        // Globe scale management - moderate size
+        const GLOBE_SCALE = 1.3; // Reduced from 2.0 to 1.3
+        let autoRotY = 0;
+        let animationPaused = false;
+        let lastFrameTime = 0;
+        
+        // Throttle rendering to prevent performance issues
         function drawGlobe(scale = GLOBE_SCALE, rotY = 0, showBands = false) {
-            ctx.clearRect(0,0,w,h);
+            if (animationPaused) return;
+            
+            // Clear and reset context properly
+            ctx.clearRect(0, 0, w, h);
             ctx.save();
+            
+            // Apply scale transform more safely
+            const scaleX = Math.min(scale, 1.8); // Reduced limit from 2.5 to 1.8
+            const scaleY = Math.min(scale, 1.8);
             ctx.translate(cx, cy);
-            ctx.scale(scale, scale);
+            ctx.scale(scaleX, scaleY);
             ctx.translate(-cx, -cy);
-            // Sphere
+            
+            // Draw sphere background
             ctx.beginPath();
             ctx.arc(cx, cy, r, 0, 2*Math.PI);
             ctx.fillStyle = "#2224";
             ctx.shadowColor = "#111";
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = 8; // Reduced shadow blur
             ctx.fill();
-
-            // Draw 21 inclined bands (gradiants)
-            if (showBands) {
-                for (let i = 0; i < 21; i++) {
-                    const bandLat = -60 + (i * 120/20); // from -60 to +60
-                    ctx.save();
-                    ctx.globalAlpha = 0.13 + 0.07 * Math.sin(i/21 * Math.PI*2);
-                    ctx.beginPath();
-                    for (let lon = -180; lon <= 180; lon += 2) {
-                        const p = latLonToXY(bandLat, lon, rotY, INCLINATION);
-                        if (lon === -180) ctx.moveTo(p.x, p.y);
-                        else ctx.lineTo(p.x, p.y);
-                    }
-                    ctx.lineWidth = 13;
-                    ctx.strokeStyle = i % 2 === 0 ? '#fff' : '#ccff00';
-                    ctx.stroke();
-                    ctx.restore();
-                }
-            }
-
-            // --- Draw all continents outlines (approximate, not filled, just lines) ---
-            // Load and extract continent outlines from cities.json (GeoJSON)
+            ctx.shadowBlur = 0; // Reset shadow
+            
+            // Load earth data once and cache it
             if (!window._bordersGeoJSON) {
-                fetch('earth.json')
-                    .then(resp => resp.json())
-                    .then(data => { window._bordersGeoJSON = data; drawGlobe(scale, rotY, showBands); });
-                ctx.restore();
+                if (!window._loadingEarthData) {
+                    window._loadingEarthData = true;
+                    fetch('earth.json')
+                        .then(resp => resp.json())
+                        .then(data => { 
+                            window._bordersGeoJSON = data;
+                            window._loadingEarthData = false;
+                        })
+                        .catch(err => {
+                            console.warn('Failed to load earth.json:', err);
+                            window._loadingEarthData = false;
+                        });
+                }
                 ctx.restore();
                 return;
             }
+            
+            // Draw continent outlines
+            drawContinentOutlines(rotY);
+            
+            // Draw grid lines
+            drawGridLines(rotY);
+            
+            // Draw cities and connections
+            drawCitiesAndConnections(rotY);
+            
+            ctx.restore();
+        }
+        
+        // Separate function to draw continent outlines
+        function drawContinentOutlines(rotY) {
             // Extract only Polygon and MultiPolygon coordinates
-function extractAllCoordinateArrays(geojson) {
-    const outlines = [];
-    for (const feature of geojson.features) {
-        const geom = feature.geometry;
-        if (!geom) continue;
-        if (geom.type === 'Polygon') {
-            for (const ring of geom.coordinates) {
-                if (Array.isArray(ring) && ring.length > 1) {
-                    outlines.push(ring);
-                }
-            }
-        } else if (geom.type === 'MultiPolygon') {
-            for (const poly of geom.coordinates) {
-                for (const ring of poly) {
-                    if (Array.isArray(ring) && ring.length > 1) {
-                        outlines.push(ring);
+            function extractAllCoordinateArrays(geojson) {
+                const outlines = [];
+                for (const feature of geojson.features) {
+                    const geom = feature.geometry;
+                    if (!geom) continue;
+                    if (geom.type === 'Polygon') {
+                        for (const ring of geom.coordinates) {
+                            if (Array.isArray(ring) && ring.length > 1) {
+                                outlines.push(ring);
+                            }
+                        }
+                    } else if (geom.type === 'MultiPolygon') {
+                        for (const poly of geom.coordinates) {
+                            for (const ring of poly) {
+                                if (Array.isArray(ring) && ring.length > 1) {
+                                    outlines.push(ring);
+                                }
+                            }
+                        }
+                    } else if (geom.type === 'LineString') {
+                        if (Array.isArray(geom.coordinates) && geom.coordinates.length > 1) {
+                            outlines.push(geom.coordinates);
+                        }
                     }
                 }
+                return outlines;
             }
-        } else if (geom.type === 'LineString') {
-            if (Array.isArray(geom.coordinates) && geom.coordinates.length > 1) {
-                outlines.push(geom.coordinates);
-            }
-        }
-        // Ignore Point, MultiPoint, etc.
-    }
-    return outlines;
-}
-const geojson = window._bordersGeoJSON;
-const continents = extractAllCoordinateArrays(geojson);
+            
+            const geojson = window._bordersGeoJSON;
+            const continents = extractAllCoordinateArrays(geojson);
+            
             ctx.save();
             ctx.globalAlpha = 0.85;
             ctx.strokeStyle = '#1affd1';
             ctx.lineWidth = 2.2;
+            
             for (const outline of continents) {
-                // Always draw visible segments, break path at invisible points
                 const projected = outline.map(pt => latLonToXY(pt[1], pt[0], rotY, INCLINATION, Z_TILT));
                 ctx.beginPath();
                 let drawing = false;
+                
                 for (let i = 0; i < outline.length; i++) {
                     const p = projected[i];
                     if (p.z > 0) {
@@ -200,13 +219,15 @@ const continents = extractAllCoordinateArrays(geojson);
                 ctx.stroke();
             }
             ctx.restore();
-            ctx.restore();
+        }
+        
+        // Separate function to draw grid lines
+        function drawGridLines(rotY) {
             ctx.save();
-            ctx.translate(cx, cy);
-            ctx.scale(scale, scale);
-            ctx.translate(-cx, -cy);
             ctx.strokeStyle = "#444";
             ctx.lineWidth = 1;
+            
+            // Latitude lines
             for(let lat=-60; lat<=60; lat+=30) {
                 ctx.beginPath();
                 for(let lon=-180; lon<=180; lon+=5) {
@@ -216,6 +237,8 @@ const continents = extractAllCoordinateArrays(geojson);
                 }
                 ctx.stroke();
             }
+            
+            // Longitude lines
             for(let lon=-150; lon<=150; lon+=30) {
                 ctx.beginPath();
                 for(let lat=-90; lat<=90; lat+=5) {
@@ -225,10 +248,18 @@ const continents = extractAllCoordinateArrays(geojson);
                 }
                 ctx.stroke();
             }
+            ctx.restore();
+        }
+        
+        // Separate function to draw cities and connections
+        function drawCitiesAndConnections(rotY) {
+            if (!citiesLoaded || !cities.length) return;
+            
             ctx.save();
             ctx.strokeStyle = "#ccff00";
             ctx.globalAlpha = 0.7;
             ctx.lineWidth = 2;
+            
             // Only use visible cities (z > 0)
             const visibleCities = cities
                 .map((city, idx) => {
@@ -236,8 +267,7 @@ const continents = extractAllCoordinateArrays(geojson);
                     return p.z > 0 ? { ...city, _idx: idx } : null;
                 })
                 .filter(Boolean);
-            // Map from visible index to original index
-            const idxMap = visibleCities.map(vc => vc._idx);
+            
             // Compute MST for visible cities
             if (visibleCities.length > 1) {
                 const mst = computeMST(visibleCities, rotY, INCLINATION, Z_TILT);
@@ -250,10 +280,14 @@ const continents = extractAllCoordinateArrays(geojson);
                     ctx.stroke();
                 });
             }
+            
             ctx.restore();
-            cities.forEach(city=>{
+            
+            // Draw cities
+            cities.forEach(city => {
                 const p = latLonToXY(city.lat, city.lon, rotY, INCLINATION);
                 if(p.z > 0) {
+                    ctx.save();
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, 6, 0, 2*Math.PI);
                     ctx.fillStyle = "#ccff00";
@@ -261,24 +295,49 @@ const continents = extractAllCoordinateArrays(geojson);
                     ctx.shadowBlur = 8;
                     ctx.fill();
                     ctx.shadowBlur = 0;
+                    
                     ctx.font = "bold 10px 'Orbitron', 'Consolas', monospace";
                     ctx.fillStyle = "#fff";
                     ctx.textAlign = "center";
                     ctx.fillText(city.name, p.x, p.y-12);
+                    ctx.restore();
                 }
             });
-            ctx.restore();
         }
-        // Continuous auto-rotation
-        function animateGlobeContinuous() {
-            autoRotY += 0.008;
-            drawGlobe(GLOBE_SCALE, Math.PI/7 + autoRotY, false);
+        
+        // Improved animation with pause/resume functionality
+        function animateGlobeContinuous(currentTime = 0) {
+            // Throttle to 30 FPS instead of 60 for better performance
+            if (currentTime - lastFrameTime < 33) {
+                requestAnimationFrame(animateGlobeContinuous);
+                return;
+            }
+            lastFrameTime = currentTime;
+            
+            if (!animationPaused) {
+                autoRotY += 0.012; // Increased from 0.005 to 0.012 (faster rotation)
+                drawGlobe(GLOBE_SCALE, Math.PI/7 + autoRotY, false);
+            }
             requestAnimationFrame(animateGlobeContinuous);
         }
+        
+        // Pause animation when page is not visible
+        document.addEventListener('visibilitychange', () => {
+            animationPaused = document.hidden;
+        });
+        
+        // Pause animation when scrolling to improve performance
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            animationPaused = true;
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                animationPaused = false;
+            }, 150); // Resume after 150ms of no scrolling
+        });
+        
+        // Start animation
         animateGlobeContinuous();
-        // Only allow interaction after animation
-        // Disable manual interaction during animation, and after, keep auto-rotating
-        // (If you want to allow drag after, you can add logic here)
     }
 
     // --- Animated nodes for the community canvas ---

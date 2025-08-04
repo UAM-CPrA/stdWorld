@@ -1,0 +1,133 @@
+{
+  "title": "Dynamic Programming",
+  "description": "Master the art of dynamic programming with classic problems and optimization techniques.",
+  "type": "folder",
+  "parentPath": "concepts/algorithms",
+  "items": [
+    {
+      "id": "introduction-to-dp",
+      "title": "Introduction to DP",
+      "type": "page",
+      "path": "concepts/algorithms/dynamic-programming/introduction-to-dp.html",
+      "url": "concepts/algorithms/dynamic-programming/introduction-to-dp.html",
+      "description": "Learn the fundamental principles of dynamic programming and how it optimizes recursive solutions.",
+      "level": "Intermediate",
+      "readingTime": 25,
+      "tags": ["dp", "memoization", "optimization", "basics"],
+      "featured": ["math", "interactive", "code"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "Overlapping Subproblems",
+          "description": "Understanding how problems can be broken down into smaller, overlapping subproblems.",
+          "mathematical_foundation": "Recursive structure with repeated calculations",
+          "applications": ["Fibonacci sequence", "Longest Common Subsequence", "Edit Distance"]
+        },
+        {
+          "title": "Optimal Substructure",
+          "description": "Learn how optimal solutions contain optimal solutions to subproblems.",
+          "mathematical_foundation": "OPT(i) = f(OPT(j)) for j < i",
+          "applications": ["Shortest paths", "Knapsack problem", "Matrix multiplication"]
+        },
+        {
+          "title": "Memoization vs Tabulation",
+          "description": "Top-down vs bottom-up approaches to dynamic programming.",
+          "mathematical_foundation": "Time complexity reduction from exponential to polynomial",
+          "applications": ["Cache optimization", "Space optimization", "Iterative solutions"]
+        },
+        {
+          "title": "State Space Design",
+          "description": "How to design effective state representations for DP problems.",
+          "mathematical_foundation": "State transition functions and base cases",
+          "applications": ["Problem modeling", "Complexity analysis", "Algorithm design"]
+        }
+      ]
+    },
+    {
+      "id": "classic-dp-problems",
+      "title": "Classic DP Problems",
+      "type": "page",
+      "path": "concepts/algorithms/dynamic-programming/classic-dp-problems.html",
+      "url": "concepts/algorithms/dynamic-programming/classic-dp-problems.html",
+      "description": "Master classic dynamic programming problems like knapsack, LCS, and edit distance with detailed solutions.",
+      "level": "Intermediate",
+      "readingTime": 35,
+      "tags": ["knapsack", "lcs", "edit-distance", "classic"],
+      "featured": ["math", "code", "examples"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "0/1 Knapsack Problem",
+          "description": "Learn the classic knapsack problem and its dynamic programming solution.",
+          "mathematical_foundation": "dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i])",
+          "applications": ["Resource allocation", "Portfolio optimization", "Memory management"]
+        },
+        {
+          "title": "Longest Common Subsequence",
+          "description": "Finding the longest subsequence common to two sequences.",
+          "mathematical_foundation": "dp[i][j] = dp[i-1][j-1] + 1 if s1[i] == s2[j]",
+          "applications": ["DNA sequencing", "Version control", "Text comparison"]
+        },
+        {
+          "title": "Edit Distance",
+          "description": "Minimum operations to transform one string into another.",
+          "mathematical_foundation": "Levenshtein distance with insert, delete, substitute operations",
+          "applications": ["Spell checkers", "DNA analysis", "Natural language processing"]
+        },
+        {
+          "title": "Coin Change Problem",
+          "description": "Finding minimum coins needed to make a target amount.",
+          "mathematical_foundation": "dp[i] = min(dp[i-coin] + 1) for all coins",
+          "applications": ["Currency systems", "Greedy algorithms", "Optimization problems"]
+        }
+      ]
+    },
+    {
+      "id": "advanced-dp-techniques",
+      "title": "Advanced DP Techniques",
+      "type": "page",
+      "path": "concepts/algorithms/dynamic-programming/advanced-dp-techniques.html",
+      "url": "concepts/algorithms/dynamic-programming/advanced-dp-techniques.html",
+      "description": "Explore advanced DP optimizations like space optimization, state compression, and digit DP.",
+      "level": "Advanced",
+      "readingTime": 40,
+      "tags": ["optimization", "bitmask", "digit-dp", "advanced"],
+      "featured": ["math", "code", "optimization"],
+      "lastUpdated": "2025-08-02",
+      "concepts": [
+        {
+          "title": "Space Optimization",
+          "description": "Reducing space complexity from O(n²) to O(n) in DP solutions.",
+          "mathematical_foundation": "Rolling arrays and in-place updates",
+          "applications": ["Memory-constrained systems", "Large datasets", "Competitive programming"]
+        },
+        {
+          "title": "Bitmask DP",
+          "description": "Using bitmasking for subset enumeration in DP problems.",
+          "mathematical_foundation": "dp[mask][state] for 2^n subsets",
+          "applications": ["Traveling salesman", "Job assignment", "Subset problems"]
+        },
+        {
+          "title": "Digit DP",
+          "description": "Dynamic programming on digits for number-related problems.",
+          "mathematical_foundation": "State: (position, tight, started)",
+          "applications": ["Counting numbers", "Sum of digits", "Number theory"]
+        },
+        {
+          "title": "Convex Hull Optimization",
+          "description": "Optimizing DP with convex hull trick for quadratic to linear complexity.",
+          "mathematical_foundation": "Monotonic queue optimization for convex functions",
+          "applications": ["Divide and conquer", "Optimization problems", "Geometry"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-08-02",
+    "version": "2.0",
+    "totalArticles": 3,
+    "structure": "folder",
+    "difficulty": "Intermediate to Advanced",
+    "estimatedTime": "100 minutes"
+  }
+}

@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>std::ULeague - International Competitive Programming League</title>
+    <link rel="icon" type="image/png" href="../stdLearn/_img/favicon.png">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        :root {
+            --primary-orange: #ff6b35;
+            --secondary-orange: #ff8c42;
+            --accent-orange: #ff5722;
+            --light-orange: #ffab91;
+            --primary-white: #ffffff;
+            --off-white: #fafafa;
+            --light-gray: #f5f5f5;
+            --dark-bg: #1a1a1a;
+            --darker-bg: #0d0d0d;
+            --card-bg: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --border-color: #404040;
+            --success-green: #4caf50;
+            --warning-orange: #ff9800;
+            --error-red: #f44336;
+            --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary-white) 0%, var(--off-white) 100%);
+            color: var(--dark-bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            border-radius: 4px;
+        }
+
+        /* Enhanced Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid #e0e0e0 !important;
+            box-shadow: var(--shadow-medium) !important;
+            transition: all 0.3s ease !important;
+            padding: 0.5rem 0 !important;
+        }
+
+        .navbar-brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-orange) !important;
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--dark-bg) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            margin: 0 0.2rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-orange) !important;
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .dropdown-menu {
+            background: var(--primary-white) !important;
+            border: 1px solid #e0e0e0 !important;
+            border-radius: 12px !important;
+            box-shadow: var(--shadow-heavy) !important;
+            padding: 0.5rem !important;
+        }
+
+        .dropdown-item {
+            color: var(--dark-bg) !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 107, 53, 0.1) !important;
+            color: var(--primary-orange) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%); color: var(--primary-white);
+            position: relative;
+            padding: 8rem 0 6rem;
+            overflow: hidden;
+            color: var(--primary-white);
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: drift 60s infinite linear;
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-60px) translateY(-60px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--primary-white);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-white);
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Feature Sections */
+        .feature-section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .feature-card {
+            background: var(--primary-white);
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            height: 100%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%); color: var(--primary-white);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--primary-orange);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%); color: var(--primary-white);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--primary-white);
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark-bg);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%); color: var(--primary-white);
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='20' cy='20' r='2'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%); color: var(--primary-white);
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            color: var(--dark-bg);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 1rem 1rem 0;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 213, 79, 0.4);
+            color: var(--dark-bg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 1rem 1rem 0;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section Button Overrides */
+        .hero-section .btn-primary {
+            background: var(--primary-white);
+            color: var(--dark-bg);
+            border: 2px solid var(--primary-white);
+        }
+
+        .hero-section .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-section .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            color: var(--primary-white);
+        }
+
+        .hero-section .btn-secondary:hover {
+            background: var(--primary-white);
+            border-color: var(--primary-white);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+        }
+
+        /* Light Section Button Overrides */
+        .py-4 .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary-orange);
+            color: var(--primary-orange);
+        }
+
+        .py-4 .btn-secondary:hover {
+            background: var(--primary-orange);
+            border-color: var(--primary-orange);
+            color: var(--primary-white);
+            transform: translateY(-2px);
+        }
+
+        /* CTA Section Button Overrides */
+        .cta-section .btn-primary {
+            background: var(--primary-white);
+            color: var(--dark-bg);
+            border: 2px solid var(--primary-white);
+        }
+
+        .cta-section .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Nodes Section */
+        .nodes-section {
+            padding: 6rem 0;
+            background: var(--off-white);
+        }
+
+        /* World Map Styles */
+        .world-map-container {
+            background: var(--primary-white);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-light);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        /* Simple World Map Styles */
+        .simple-world-map {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: #f8f9fa;
+            border: 2px solid var(--primary-orange);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .world-svg {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .continent-path {
+            fill: #4CAF50;
+            stroke: #2E7D32;
+            stroke-width: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .continent-path:hover {
+            fill: #66BB6A;
+        }
+
+        .node-marker {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .node-marker:hover {
+            transform: scale(1.1);
+            opacity: 1 !important;
+        }
+
+        .node-marker.active circle:first-child {
+            filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.5));
+        }
+
+        .node-marker.coming-soon circle {
+            filter: drop-shadow(0 0 4px rgba(255, 193, 7, 0.3));
+        }
+
+        .world-map {
+            position: relative;
+            width: 100%;
+            min-height: 450px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f1f8e9 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        #mapCanvas {
+            width: 100% !important;
+            height: 400px !important;
+            display: block !important;
+            position: static !important;
+            cursor: grab;
+            border: 3px solid var(--primary-orange) !important;
+            background: #FFFFFF !important;
+        }
+
+        #mapCanvas:active {
+            cursor: grabbing;
+        }
+
+        .map-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .map-controls .btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .map-svg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .continent {
+            fill: #c8e6c9;
+            stroke: #81c784;
+            stroke-width: 1;
+            transition: all 0.3s ease;
+        }
+
+        .continent:hover {
+            fill: #a5d6a7;
+            stroke: var(--primary-orange);
+            stroke-width: 2;
+        }
+
+        .node-markers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .node-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            pointer-events: all;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .node-marker:hover {
+            transform: scale(1.2);
+            z-index: 20;
+        }
+
+        .marker-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--primary-orange);
+            opacity: 0.3;
+            animation: pulse 2s infinite;
+        }
+
+        .node-marker.coming-soon .marker-pulse {
+            background: #ffc107;
+            opacity: 0.2;
+        }
+
+        .marker-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background: var(--primary-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid white;
+        }
+
+        .node-marker.coming-soon .marker-icon {
+            background: #ffc107;
+        }
+
+        .marker-tooltip {
+            position: absolute;
+            bottom: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark-bg);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-medium);
+            z-index: 100;
+        }
+
+        .marker-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: var(--dark-bg);
+        }
+
+        .marker-tooltip h5 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .marker-tooltip p {
+            margin: 0;
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .node-marker:hover .marker-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .map-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .legend-marker {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .legend-marker.active {
+            background: var(--primary-orange);
+        }
+
+        .legend-marker.coming-soon {
+            background: #ffc107;
+        }
+
+        .node-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .node-info h4 {
+            color: var(--dark-bg);
+            margin-bottom: 0.5rem;
+        }
+
+        .node-info p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .node-associations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .association-item {
+            background: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            font-size: 0.85rem;
+            color: var(--dark-bg);
+            transition: all 0.3s ease;
+        }
+
+        .association-item:hover {
+            border-color: var(--primary-orange);
+            transform: translateY(-2px);
+        }
+
+        /* Professional Node Markers */
+        .professional-node {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            pointer-events: all;
+            z-index: 15;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center;
+            transform: translate(-50%, -50%);
+        }
+
+        .professional-node:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+            z-index: 20;
+        }
+
+        .node-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--primary-orange);
+            opacity: 0.4;
+            animation: profPulse 2.5s infinite ease-in-out;
+        }
+
+        .node-pulse.coming-soon {
+            background: #ffc107;
+            opacity: 0.3;
+        }
+
+        @keyframes profPulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.6); opacity: 0.1; }
+            100% { transform: scale(1); opacity: 0.4; }
+        }
+
+        .node-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 16px rgba(255, 107, 53, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .node-core.coming-soon {
+            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            box-shadow: 0 4px 16px rgba(255, 193, 7, 0.4);
+        }
+
+        /* Node Dialog Styles */
+        .node-dialog {
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            background: rgba(26, 26, 26, 0.95);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 30;
+            pointer-events: all;
+        }
+
+        .node-dialog.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .node-dialog::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: rgba(26, 26, 26, 0.95);
+        }
+
+        .node-dialog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .node-dialog-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-orange);
+            margin: 0;
+        }
+
+        .node-dialog-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .node-dialog-close:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .node-dialog-content {
+            padding: 0.75rem 1rem 1rem;
+        }
+
+        .node-dialog-content p {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .node-dialog-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .node-dialog-status.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .node-dialog-status.coming-soon {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .node-dialog-associations {
+            margin-top: 0.75rem;
+        }
+
+        .node-dialog-associations h6 {
+            font-size: 0.85rem;
+            color: var(--primary-orange);
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .dialog-association {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .dialog-association:last-child {
+            margin-bottom: 0;
+        }
+
+        .dialog-association i {
+            color: var(--primary-orange);
+            font-size: 0.8rem;
+        }
+
+        /* Leaflet Map Styles */
+        #leaflet-map {
+            border-radius: 0;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: rgba(26, 26, 26, 0.95);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .leaflet-popup-content {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .leaflet-popup-tip {
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .leaflet-popup-close-button {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 18px !important;
+            padding: 4px 8px !important;
+        }
+
+        .leaflet-popup-close-button:hover {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 4px;
+        }
+
+        .node-popup {
+            padding: 1rem;
+            min-width: 250px;
+        }
+
+        .node-popup-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-orange);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .node-popup-content p {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .node-popup-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .node-popup-status.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .node-popup-status.coming-soon {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .node-popup-associations {
+            margin-top: 0.75rem;
+        }
+
+        .node-popup-associations h6 {
+            font-size: 0.85rem;
+            color: var(--primary-orange);
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .popup-association {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .popup-association:last-child {
+            margin-bottom: 0;
+        }
+
+        .popup-association i {
+            color: var(--primary-orange);
+            font-size: 0.8rem;
+        }
+
+        /* Custom marker styles */
+        .custom-marker {
+            background: transparent;
+            border: none;
+            width: 32px;
+            height: 32px;
+        }
+
+        .marker-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .marker-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--primary-orange);
+            opacity: 0.4;
+            animation: markerPulse 2.5s infinite ease-in-out;
+        }
+
+        .marker-pulse.coming-soon {
+            background: #ffc107;
+            opacity: 0.3;
+        }
+
+        @keyframes markerPulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.6); opacity: 0.1; }
+            100% { transform: scale(1); opacity: 0.4; }
+        }
+
+        .marker-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 16px rgba(255, 107, 53, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .marker-core.coming-soon {
+            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            box-shadow: 0 4px 16px rgba(255, 193, 7, 0.4);
+        }
+
+        /* Responsive Map */
+        @media (max-width: 768px) {
+            #world-map-container {
+                height: 400px !important;
+            }
+
+            .node-popup {
+                min-width: 200px;
+                padding: 0.75rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            #world-map-container {
+                height: 600px !important;
+            }
+        }
+
+        .node-card {
+            background: var(--primary-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .node-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--primary-orange);
+        }
+
+        .node-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--border-color);
+            font-size: 2rem;
+        }
+
+        .node-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .node-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .node-status {
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-green);
+        }
+
+        .status-coming-soon {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning-orange);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--darker-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h5 {
+            color: var(--primary-orange);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-orange);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .feature-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-up.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading states */
+        .skeleton {
+            background: linear-gradient(90deg, var(--border-color) 25%, var(--card-bg) 50%, var(--border-color) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">std::ULeague</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#nodes">Nodes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="leaderboard.html">Rankings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="scoring.html">Scoring</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-1"></i> Resources
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../index.html">
+                                <i class="fas fa-world me-2"></i>std::World
+                            </a></li>
+                            <li><a class="dropdown-item" href="../stdLearn/index.html">
+                                <i class="fas fa-graduation-cap me-2"></i>std::Learn
+                            </a></li>
+                            <li><a class="dropdown-item" href="rules.html">
+                                <i class="fas fa-book me-2"></i>Competition Rules
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="hero-content fade-in-up">
+                <h1 class="hero-title">The International Competitive Programming League</h1>
+                <p class="hero-subtitle">
+                    A revolutionary international league where students, professors, alumni, and programming enthusiasts 
+                    compete together in a structured, sustainable ecosystem that never ends when you graduate.
+                </p>
+                
+                <div class="mt-4">
+                    <a href="#about" class="btn-primary">Discover More</a>
+                    <a href="register.html" class="btn-secondary">Join Now</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item fade-in-up">
+                        <span class="stat-number" data-count="18">0</span>
+                        <span class="stat-label">Active Nodes</span>
+                    </div>
+                    <div class="stat-item fade-in-up">
+                        <span class="stat-number" data-count="12">0</span>
+                        <span class="stat-label">Countries</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="feature-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto fade-in-up">
+                    <h2 class="display-4 fw-bold mb-4">Why std::ULeague?</h2>
+                    <p class="lead text-muted">
+                        We're revolutionizing competitive programming with a unique individual-collective format 
+                        featuring 5-day journeys where personal achievements benefit entire nodes, creating an 
+                        inclusive ecosystem that bridges academic and professional programming communities.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 fade-in-up">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-week"></i>
+                        </div>
+                        <h3 class="feature-title">5-Day Journey Format</h3>
+                        <p class="feature-description">
+                            Competitions run from Thursday to Monday with daily penalties (20% every 24h), 
+                            allowing flexible participation while maintaining competitive intensity. Solutions 
+                            are published every Tuesday after each journey ends.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 fade-in-up">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Individual-Collective Competition</h3>
+                        <p class="feature-description">
+                            Participants compete individually, but any solution by a node member counts for the 
+                            entire node. Node members can help 
+                            each other, form teams, and use AI tools to enhance their problem-solving capabilities.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 fade-in-up">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="feature-title">Daily Penalty System</h3>
+                        <p class="feature-description">
+                            Instead of minute-based penalties, our system applies 20% point reduction every 24 hours. 
+                            This creates a more balanced competitive environment that accommodates different time 
+                            zones and schedules while maintaining urgency. Journey runs Thursday to Monday.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 fade-in-up">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h3 class="feature-title">Global Node Network</h3>
+                        <p class="feature-description">
+                            Connect with programming communities worldwide through our node-based structure. 
+                            Each node represents universities, organizations, or communities, fostering 
+                            international collaboration and healthy competition.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 fade-in-up">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h3 class="feature-title">Lifelong Participation</h3>
+                        <p class="feature-description">
+                            Unlike traditional competitions that end with graduation, our league welcomes students, 
+                            alumni, professors, and industry professionals to compete together indefinitely within 
+                            their node communities.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 fade-in-up">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="feature-title">Sustainable Growth</h3>
+                        <p class="feature-description">
+                            Built for scalability with a self-sustaining model where nodes contribute problems 
+                            and benefit from the global competition. The 5-day format ensures consistent 
+                            engagement while accommodating diverse schedules worldwide.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nodes Section -->
+    <section id="nodes" class="nodes-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto fade-in-up">
+                    <h2 class="display-4 fw-bold mb-4">
+                        <i class="fas fa-globe me-3" style="color: var(--primary-orange);"></i>Our Global Network
+                    </h2>
+                    <p class="lead text-muted mb-4">
+                        std::ULeague operates through a vibrant network of nodes worldwide, each representing 
+                        universities, organizations, or communities passionate about competitive programming and collaborative learning.
+                    </p>
+                    <div class="row g-3 justify-content-center mb-4">
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center bg-white rounded-pill px-4 py-2 shadow-sm border">
+                                <i class="fas fa-university me-2" style="color: var(--primary-orange);"></i>
+                                <span class="fw-semibold">Universities</span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center bg-white rounded-pill px-4 py-2 shadow-sm border">
+                                <i class="fas fa-building me-2" style="color: var(--primary-orange);"></i>
+                                <span class="fw-semibold">Organizations</span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center bg-white rounded-pill px-4 py-2 shadow-sm border">
+                                <i class="fas fa-users me-2" style="color: var(--primary-orange);"></i>
+                                <span class="fw-semibold">Communities</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Width World Map -->
+    <section class="py-0">
+        <div class="container-fluid px-0">
+            <div class="row justify-content-center">
+                <div class="col-12" style="max-width: 1400px;">
+                    <!-- Professional Leaflet Map -->
+                    <div id="world-map-container" style="position: relative; width: 100%; height: 500px; background: #f8f9fa; margin: 0 auto;">
+                        <div id="leaflet-map" style="width: 100%; height: 100%; z-index: 1;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Information Section -->
+    <section class="py-4" style="background: var(--off-white);">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Map Legend -->
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <div class="legend-marker active"></div>
+                            <span>Active Node</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-marker coming-soon"></div>
+                            <span>Coming Soon</span>
+                        </div>
+                        <div class="legend-item">
+                            <i class="fas fa-info-circle text-muted"></i>
+                            <span class="text-muted">Click markers for details</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="nodes.html" class="btn-primary">Explore All Nodes</a>
+                <a href="register.html" class="btn-secondary">Join a Node</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey System Section -->
+    <section class="journey-system-section" style="background: var(--primary-white); padding: 4rem 0;">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto fade-in-up">
+                    <h2 class="display-4 fw-bold mb-4">
+                        <i class="fas fa-calendar-week me-3"></i>5-Day Journey System
+                    </h2>
+                    <p class="lead text-muted">
+                        Experience competitive programming like never before with our innovative 5-day journey format 
+                        that combines individual excellence with collective node achievement and collaborative learning.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-lg-6 fade-in-up">
+                    <div class="feature-card h-100" style="background: var(--primary-white); border: 1px solid #e0e0e0; border-radius: 16px; padding: 2rem;">
+                        <h3 style="color: var(--primary-orange); margin-bottom: 1.5rem;">
+                            <i class="fas fa-user-friends me-2"></i>Individual + Collective
+                        </h3>
+                        <p class="text-muted mb-3">
+                            Every participant competes individually, solving problems at their own pace and style. 
+                            However, once any member of your node solves a problem, the entire node gets credit for it.
+                            Node members can collaborate, share knowledge, and use AI tools to enhance problem-solving.
+                        </p>
+                        <div style="background: #f8f9fa; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                            <small class="text-muted">
+                                <i class="fas fa-lightbulb me-1" style="color: var(--warning-orange);"></i>
+                                <strong>Example:</strong> If María from std::Madrid solves Problem A, the entire std::Madrid node gets points. 
+                                Members can help each other and use AI tools during the journey.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 fade-in-up">
+                    <div class="feature-card h-100" style="background: var(--primary-white); border: 1px solid #e0e0e0; border-radius: 16px; padding: 2rem;">
+                        <h3 style="color: var(--primary-orange); margin-bottom: 1.5rem;">
+                            <i class="fas fa-clock me-2"></i>Daily Penalty System
+                        </h3>
+                        <p class="text-muted mb-3">
+                            Unlike traditional contests with minute-based penalties, we use a 24-hour penalty system. 
+                            Every day that passes reduces the available points by 20%, making the competition fair across time zones.
+                        </p>
+                        <div style="background: #f8f9fa; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                            <small class="text-muted">
+                                <i class="fas fa-chart-line me-1" style="color: var(--success-green);"></i>
+                                <strong>Point Schedule:</strong> Thu: 100% → Fri: 80% → Sat: 60% → Sun: 40% → Mon: 20%
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Journey Timeline -->
+            <div class="row">
+                <div class="col-12 fade-in-up">
+                    <div class="journey-timeline" style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 16px; padding: 2rem;">
+                        <h3 style="color: var(--primary-orange); text-align: center; margin-bottom: 2rem;">
+                            <i class="fas fa-calendar-alt me-2"></i>Weekly Journey Cycle
+                        </h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; text-align: center;">
+                            <div style="padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange)); color: white;">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class="fas fa-play"></i></div>
+                                <h5 style="margin-bottom: 0.5rem;">Thursday</h5>
+                                <small>Journey Starts<br>Problems Released</small>
+                            </div>
+                            <div style="padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, #ff9670, #ff7f50); color: white; border: 2px solid var(--primary-orange);">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class="fas fa-users"></i></div>
+                                <h5 style="margin-bottom: 0.5rem;">Fri-Sun</h5>
+                                <small>Collaborative Days<br>AI Tools Allowed</small>
+                            </div>
+                            <div style="padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, var(--success-green), #45a049); color: white;">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class="fas fa-flag-checkered"></i></div>
+                                <h5 style="margin-bottom: 0.5rem;">Monday</h5>
+                                <small>Journey Ends<br>Final Solutions</small>
+                            </div>
+                            <div style="padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, #ffab7a, #ff8c5a); color: white;">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class="fas fa-book-open"></i></div>
+                                <h5 style="margin-bottom: 0.5rem;">Tuesday</h5>
+                                <small>Solutions Published<br>Next Journey Prep</small>
+                            </div>
+                            <div style="padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, #ffb885, #ff9965); color: white; border: 1px solid var(--primary-orange);">
+                                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class="fas fa-bed"></i></div>
+                                <h5 style="margin-bottom: 0.5rem;">Wednesday</h5>
+                                <small>Rest Day<br>Node Collaboration</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content fade-in-up">
+                <h2 class="display-4 fw-bold mb-4">Ready to Compete?</h2>
+                <p class="lead mb-5">
+                    Join thousands of programmers worldwide in the most innovative competitive programming league. 
+                    Whether you're a student, professor, or industry professional - there's a place for you here.
+                </p>
+                
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    <a href="register.html" class="btn-primary">
+                        <i class="fas fa-user-plus me-2"></i>Register Now
+                    </a>
+                    <a href="leaderboard.html" class="btn-secondary">
+                        <i class="fas fa-chart-bar me-2"></i>View Rankings
+                    </a>
+                    <a href="rules.html" class="btn-secondary">
+                        <i class="fas fa-book me-2"></i>Competition Rules
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 std::ULeague. Built with passion for competitive programming. 
+                   Part of the <a href="../index.html" style="color: var(--primary-orange);">std::World</a> ecosystem.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('[data-count]');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000;
+                const steps = 60;
+                const stepSize = target / steps;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += stepSize;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = Math.floor(current).toLocaleString();
+                }, duration / steps);
+            });
+        }
+
+        // Professional Leaflet World Map
+        let map;
+        let nodes = [];
+
+        async function loadNodesData() {
+            try {
+                const response = await fetch('../nodes_backup.json');
+                const data = await response.json();
+                
+                // Coordenadas predefinidas para nodos que no las tienen en el JSON
+                const defaultCoordinates = {
+                    'Pune': { lat: 18.5204, lon: 73.8567 },
+                    'Mumbai': { lat: 19.0760, lon: 72.8777 },
+                    'NewDelhi': { lat: 28.6139, lon: 77.2090 },
+                    'Indore': { lat: 22.7196, lon: 75.8577 },
+                    'KualaLumpur': { lat: 3.1390, lon: 101.6869 },
+                    'Tainan': { lat: 22.9999, lon: 120.2269 },
+                    'Taichen': { lat: 24.1477, lon: 120.6736 },
+                    'Nepal': { lat: 27.7172, lon: 85.3240 }, // Kathmandu
+                    'Montreal': { lat: 45.5017, lon: -73.5673 },
+                    'Bogota': { lat: 4.7110, lon: -74.0721 },
+                    'BurkinaFaso': { lat: 12.3714, lon: -1.5197 } // Ouagadougou
+                };
+                
+                nodes = [];
+                Object.entries(data).forEach(([continent, countries]) => {
+                    Object.entries(countries).forEach(([countryKey, nodeData]) => {
+                        // Usar coordenadas del JSON o coordenadas predefinidas
+                        const coordinates = nodeData.coordinates || defaultCoordinates[countryKey];
+                        
+                        if (coordinates) {
+                            const node = {
+                                id: countryKey.toLowerCase(),
+                                name: nodeData.name,
+                                lon: coordinates.lon,
+                                lat: coordinates.lat,
+                                active: countryKey === 'Madrid',
+                                desc: nodeData.desc,
+                                associations: nodeData.associations || []
+                            };
+                            nodes.push(node);
+                        }
+                    });
+                });
+                
+                console.log('Loaded nodes for Leaflet:', nodes);
+                return true;
+            } catch (error) {
+                console.error('Error loading nodes data:', error);
+                // Fallback nodes - mantenemos algunos por seguridad
+                nodes = [
+                    { id: 'madrid', name: 'std::Madrid', lon: -3.7038, lat: 40.4168, active: true, desc: 'Node for Madrid - std::World Board of Directors', associations: ['CPrA (UAM)', 'UCppM', 'URJC-CP', 'CUNEF'] },
+                    { id: 'munich', name: 'std::Munich', lon: 11.5820, lat: 48.1351, active: false, desc: 'Node for Munich, Germany', associations: [] },
+                    { id: 'london', name: 'std::London', lon: -0.1276, lat: 51.5074, active: false, desc: 'Node for London, United Kingdom', associations: [] }
+                ];
+                return false;
+            }
+        }
+
+        function createCustomMarker(node) {
+            const markerHtml = `
+                <div class="marker-content">
+                    <div class="marker-pulse ${node.active ? '' : 'coming-soon'}"></div>
+                    <div class="marker-core ${node.active ? '' : 'coming-soon'}">
+                        <i class="fas fa-${node.active ? 'code' : 'clock'}"></i>
+                    </div>
+                </div>
+            `;
+            
+            return L.divIcon({
+                html: markerHtml,
+                className: 'custom-marker',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16],
+                popupAnchor: [0, -16]
+            });
+        }
+
+        function createPopupContent(node) {
+            const associationsHTML = node.associations && node.associations.length > 0 ? `
+                <div class="node-popup-associations">
+                    <h6>Associated Institutions</h6>
+                    ${node.associations.map(assoc => `
+                        <div class="popup-association">
+                            <i class="fas fa-university"></i>
+                            <span>${typeof assoc === 'string' ? assoc : assoc.name}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '';
+            
+            return `
+                <div class="node-popup">
+                    <h4 class="node-popup-title">${node.name}</h4>
+                    <p><i class="fas fa-map-marker-alt" style="color: var(--primary-orange); margin-right: 8px;"></i>${node.desc}</p>
+                    <div class="node-popup-status ${node.active ? 'active' : 'coming-soon'}">
+                        <i class="fas fa-${node.active ? 'check-circle' : 'clock'}" style="margin-right: 4px;"></i>
+                        ${node.active ? 'Active' : 'Coming Soon'}
+                    </div>
+                    ${associationsHTML}
+                </div>
+            `;
+        }
+
+        async function initLeafletMap() {
+            console.log('Initializing Leaflet map...');
+            
+            // Initialize the map with world bounds restriction
+            map = L.map('leaflet-map', {
+                center: [30, 0], // Center on the world
+                zoom: 2,
+                minZoom: 2,
+                maxZoom: 8,
+                zoomControl: true,
+                scrollWheelZoom: true,
+                doubleClickZoom: true,
+                dragging: true,
+                // Restrict the map to a single world view
+                maxBounds: [[-85, -180], [85, 180]],
+                maxBoundsViscosity: 1.0
+            });
+            
+            // Add professional tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 18,
+                className: 'map-tiles',
+                // Prevent wrapping around the world
+                noWrap: true
+            }).addTo(map);
+            
+            // Load and add nodes
+            await loadNodesData();
+            
+            // Add markers to map
+            nodes.forEach(node => {
+                const marker = L.marker([node.lat, node.lon], {
+                    icon: createCustomMarker(node)
+                }).addTo(map);
+                
+                // Determine popup position based on latitude
+                const isUpperHalf = node.lat > 20; // Above roughly middle of visible world
+                const popupAnchor = isUpperHalf ? [0, 16] : [0, -16]; // Below for upper half, above for lower half
+                
+                marker.bindPopup(createPopupContent(node), {
+                    maxWidth: 300,
+                    className: 'custom-popup',
+                    closeButton: false,
+                    autoPan: false,
+                    offset: popupAnchor
+                });
+                
+                // Add hover effects - open on mouseover, close on mouseout
+                marker.on('mouseover', function() {
+                    this.openPopup();
+                });
+                
+                marker.on('mouseout', function() {
+                    this.closePopup();
+                });
+            });
+            
+            console.log('Leaflet map initialized with', nodes.length, 'nodes');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize professional Leaflet map
+            initLeafletMap();
+            
+            // Start counter animation when hero section is visible
+            const heroSection = document.querySelector('.hero-section');
+            const heroObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        heroObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            heroObserver.observe(heroSection);
+        });
+
+        // Navbar background change on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(15, 23, 42, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(15, 23, 42, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>

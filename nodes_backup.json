@@ -4,6 +4,10 @@
       "name": "std::Madrid",
       "img": "stdNodes/stdMadrid/stdMadrid.png",
       "desc": "Node for Madrid - std::World Board of Directors",
+      "coordinates": {
+        "lat": 40.4168,
+        "lon": -3.7038
+      },
       "associations": [
        {
           "name": "CPrA (Universidad Autónoma de Madrid)",
@@ -31,6 +35,10 @@
       "name": "std::Munich",
       "img": "stdNodes/coming-soon.svg",
       "desc": "Node for Munich, Germany",
+      "coordinates": {
+        "lat": 48.1351,
+        "lon": 11.5820
+      },
       "associations": [
         {
           "name": "To be added",
@@ -43,6 +51,10 @@
       "name": "std::London",
       "img": "stdNodes/coming-soon.svg",
       "desc": "Node for London, United Kingdom",
+      "coordinates": {
+        "lat": 51.5074,
+        "lon": -0.1278
+      },
       "associations": [
         {
           "name": "To be added",
@@ -55,6 +67,10 @@
       "name": "std::Bologna",
       "img": "stdNodes/coming-soon.svg",
       "desc": "Node for Bologna, Italy",
+      "coordinates": {
+        "lat": 44.4949,
+        "lon": 11.3426
+      },
       "associations": [
         {
           "name": "To be added",
@@ -69,6 +85,10 @@
       "name": "std::Dhaka",
       "img": "stdNodes/coming-soon.svg",
       "desc": "Node for Dhaka, Bangladesh",
+      "coordinates": {
+        "lat": 23.8103,
+        "lon": 90.4125
+      },
       "associations": [
         {
           "name": "To be added",
@@ -81,6 +101,10 @@
       "name": "std::Jaipur",
       "img": "stdNodes/coming-soon.svg",
       "desc": "Node for Jaipur, India",
+      "coordinates": {
+        "lat": 26.9124,
+        "lon": 75.7873
+      },
       "associations": [
         {
           "name": "To be added",
@@ -165,6 +189,10 @@
       "name": "std::Taichen",
       "img": "stdNodes/coming-soon.svg",
       "desc": "Node for Taichung, Taiwan",
+      "coordinates": {
+        "lat": 24.1477,
+        "lon": 120.6736
+      },
       "associations": [
         {
           "name": "To be added",

@@ -1,0 +1,53 @@
+{
+  "title": "Advanced Algorithms",
+  "description": "Explore powerful algorithms and their implementations in competitive programming.",
+  "type": "folder",
+  "parentPath": "concepts",
+  "items": [
+    {
+      "id": "dynamic-programming",
+      "title": "Dynamic Programming",
+      "type": "folder",
+      "path": "concepts/algorithms/dynamic-programming",
+      "url": "concepts/algorithms/dynamic-programming.html",
+      "description": "Master the art of dynamic programming with classic problems like LCS, knapsack, and optimization techniques.",
+      "level": "Intermediate",
+      "readingTime": 60,
+      "tags": ["dp", "memoization", "optimization", "recursion"],
+      "featured": ["math", "code", "interactive"],
+      "lastUpdated": "2025-08-02"
+    },
+    {
+      "id": "graph-algorithms",
+      "title": "Graph Algorithms",
+      "type": "page",
+      "path": "concepts/algorithms/graph-algorithms.html",
+      "url": "concepts/algorithms/graph-algorithms.html",
+      "description": "Essential graph algorithms including DFS, BFS, shortest paths, MST, and topological sorting.",
+      "level": "Intermediate",
+      "readingTime": 45,
+      "tags": ["graphs", "dfs", "bfs", "dijkstra", "mst"],
+      "featured": ["math", "code"],
+      "lastUpdated": "2025-08-02"
+    },
+    {
+      "id": "string-algorithms",
+      "title": "String Algorithms",
+      "type": "page",
+      "path": "concepts/algorithms/string-algorithms.html",
+      "url": "concepts/algorithms/string-algorithms.html",
+      "description": "Advanced string processing algorithms including KMP, Z-algorithm, suffix arrays, and string hashing.",
+      "level": "Advanced",
+      "readingTime": 40,
+      "tags": ["strings", "kmp", "suffix-array", "hashing"],
+      "featured": ["code", "examples"],
+      "lastUpdated": "2025-08-02"
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-08-02",
+    "version": "2.0",
+    "totalItems": 3,
+    "structure": "hierarchical"
+  }
+}
